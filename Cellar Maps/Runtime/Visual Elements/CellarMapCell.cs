@@ -15,7 +15,7 @@ namespace CellarMaps.UI
         public CellarMapCell(int x, int y, Action<Vector2Int> interactionCallback)
         {
             _coordinate = new Vector2Int(x, y);
-            AddToClassList("cm-field-cell");
+            AddToClassList("cm-cellar-map-cell");
             UpdateTooltip();
             clicked += InvokeInteractionCallback;
             _defaultBackgroundColor = style.backgroundColor;

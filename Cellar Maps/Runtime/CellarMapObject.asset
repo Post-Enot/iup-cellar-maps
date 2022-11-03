@@ -1,0 +1,156 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3695bac85a0454c479bacb5f33ecfcbc, type: 3}
+  m_Name: CellarMapObject
+  m_EditorClassIdentifier: 
+  _cellarMap:
+    rid: 3484217177888522270
+  _viewPalette:
+    rid: 3484217177888522271
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3484217177888522270
+      type: {class: CellarMap, ns: CellarMaps, asm: NewAssembly}
+      data:
+        _smapWidth: 10
+        _palette:
+          rid: 3484217177888522272
+        _smap:
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+    - rid: 3484217177888522271
+      type: {class: ViewPalette, ns: CellarMaps, asm: NewAssembly}
+      data:
+        _palette:
+          rid: 3484217177888522272
+        _skeys:
+        - rid: 3484217177888522273
+        _svalues:
+        - rid: 3484217177888522274
+        _viewDataOrder:
+        - rid: 3484217177888522274
+    - rid: 3484217177888522272
+      type: {class: Palette, ns: CellarMaps, asm: NewAssembly}
+      data:
+        _scellTypes:
+        - rid: 3484217177888522273
+    - rid: 3484217177888522273
+      type: {class: CellType, ns: CellarMaps, asm: NewAssembly}
+      data:
+        _typeName: noname
+    - rid: 3484217177888522274
+      type: {class: CellTypeViewData, ns: CellarMaps, asm: NewAssembly}
+      data:
+        _type:
+          rid: 3484217177888522273
+        _color: {r: 0.11764706, g: 0.11764706, b: 0.11764706, a: 1}
