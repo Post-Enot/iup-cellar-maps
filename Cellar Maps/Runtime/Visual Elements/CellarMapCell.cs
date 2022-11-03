@@ -5,14 +5,14 @@ using UnityEngine.UIElements;
 
 namespace CellarMaps.UI
 {
-    public sealed class FieldCell : Button
+    public sealed class CellarMapCell : Button
     {
-        public FieldCell()
+        public CellarMapCell()
         {
             _defaultBackgroundColor = style.backgroundColor;
         }
 
-        public FieldCell(int x, int y, Action<Vector2Int> interactionCallback)
+        public CellarMapCell(int x, int y, Action<Vector2Int> interactionCallback)
         {
             _coordinate = new Vector2Int(x, y);
             AddToClassList("cm-field-cell");
@@ -22,11 +22,12 @@ namespace CellarMaps.UI
             _interactionCallback = interactionCallback;
         }
 
-        ~FieldCell()
+        ~CellarMapCell()
         {
             if (_viewData != null)
             {
                 _viewData.ViewDataUpdated -= InitViewData;
+                clicked -= InvokeInteractionCallback;
             }
         }
 
@@ -89,7 +90,7 @@ namespace CellarMaps.UI
 
         #region UXML
         [Preserve]
-        public new sealed class UxmlFactory : UxmlFactory<FieldCell, UxmlTraits> { }
+        public new sealed class UxmlFactory : UxmlFactory<CellarMapCell, UxmlTraits> { }
 
         [Preserve]
         public new sealed class UxmlTraits : VisualElement.UxmlTraits { }

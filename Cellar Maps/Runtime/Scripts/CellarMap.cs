@@ -23,6 +23,11 @@ namespace CellarMaps
             Recreate(width, height);
         }
 
+        ~CellarMap()
+        {
+            CellsChanged = null;
+        }
+
         /// <summary>
         /// Ширина карты.
         /// </summary>
@@ -41,6 +46,7 @@ namespace CellarMaps
         /// изменённых клеток.
         /// </summary>
         public event Action<Vector2Int[]> CellsChanged;
+        public event Action Recreated;
 
         [SerializeField] private CellType[,] _map;
         [SerializeField] private int _smapWidth;
@@ -86,6 +92,7 @@ namespace CellarMaps
                 throw new ArgumentException("Высота поля должна быть больше или равна 1.");
             }
             _map = new CellType[height, width];
+            Recreated?.Invoke();
         }
 
         /// <summary>
@@ -117,6 +124,15 @@ namespace CellarMaps
         }
 
         /// <summary>
+        /// Очищает карту от переданного типа клеток.
+        /// </summary>
+        /// <param name="removedType">Тип клетки, от которого необходимо очистить карту.</param>
+        public void ClearFrom(CellType removedType)
+        {
+            ReplaceWithOthers(removedType, null);
+        }
+
+        /// <summary>
         /// Заменяет один тип клеток на другой.
         /// </summary>
         /// <param name="replace">Заменяемый тип клетки.</param>
@@ -128,22 +144,14 @@ namespace CellarMaps
             {
                 for (int x = 0; x < Width; x += 1)
                 {
-                    if (_map[y, x] != replace)
+                    if (_map[y, x] == replace)
                     {
                         _map[y, x] = other;
                         coordinates.Add(new Vector2Int(x, y));
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Очищает карту от переданного типа клеток.
-        /// </summary>
-        /// <param name="removedType">Тип клетки, от которого необходимо очистить карту.</param>
-        public void ClearFrom(CellType removedType)
-        {
-            ReplaceWithOthers(removedType, null);
+            CellsChanged?.Invoke(coordinates.ToArray());
         }
 
         private void SetCellByCoordinate(CellType type, int x, int y)
@@ -163,11 +171,11 @@ namespace CellarMaps
             for (int i = 0; i < _smap.Length; i += 1)
             {
                 int x = i % Width;
-                int y = i / Height;
-                _smap[i] = _map[y, x];
+                int y = i / Width;
+               _smap[i] = _map[y, x];
             }
         }
-
+        
         public void OnAfterDeserialize()
         {
             int height = _smap.Length / _smapWidth;
@@ -180,6 +188,7 @@ namespace CellarMaps
                     _map[y, x] = _smap[i];
                 }
             }
+            Palette.CellTypeRemovedFromPalette += ClearFrom;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace CellarMaps
 
         private HashSet<CellType> _cellTypes = new();
 
-        [SerializeField][SerializeReference] private CellType[] _scellTypes;
+        [SerializeReference] private CellType[] _scellTypes;
 
         /// <summary>
         /// Вызывается при удалении типа клетки из палитры.

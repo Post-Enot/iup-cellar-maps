@@ -1,11 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <Style src="project://database/Assets/CellarMapAssetEditorStyleSheet.uss?fileID=7433441132597879392&amp;guid=9a6cd4e2d98a5fb4f9832cb025fd4e8b&amp;type=3#CellarMapAssetEditorStyleSheet" />
     <CellarMaps.UI.Palette focusable="true" name="palette" />
+    <CellarMaps.UI.SelectedCellTypeIndicator name="selected-cell-type-indicator" style="padding-left: 3px; padding-right: 3px;" />
     <ui:VisualElement name="button-block" style="flex-grow: 0; flex-shrink: 0;">
         <uie:IntegerField label="Height" value="42" name="height-int-field" style="flex-grow: 1; flex-shrink: 1;" />
         <uie:IntegerField label="Width" value="42" name="width-int-field" style="flex-grow: 1; flex-shrink: 1;" />
-        <ui:Button text="Generate Field" display-tooltip-when-elided="true" name="generate-field-button" style="flex-shrink: 1; flex-grow: 1;" />
-        <ui:Button text="Resize Field" display-tooltip-when-elided="true" name="resize-field-button" style="flex-shrink: 1; flex-grow: 1;" />
+        <ui:Button text="Generate Map" display-tooltip-when-elided="true" name="generate-cellar-map-button" style="flex-shrink: 1; flex-grow: 1;" />
     </ui:VisualElement>
-    <CellarMaps.UI.Field name="field" />
+    <CellarMaps.UI.CellarMap name="cellar-map" />
 </ui:UXML>

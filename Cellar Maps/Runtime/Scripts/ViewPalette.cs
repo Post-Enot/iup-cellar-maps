@@ -19,15 +19,34 @@ namespace CellarMaps
             }
         }
 
+        public CellTypeViewData SelectedCellTypeViewData
+        {
+            get => _selectedCellTypeViewData;
+            set
+            {
+                if (_selectedCellTypeViewData != value)
+                {
+                    _selectedCellTypeViewData = value;
+                    SelectedCellTypeViewDataChanged?.Invoke(_selectedCellTypeViewData);
+                }
+                else
+                {
+                    _selectedCellTypeViewData = value;
+                }
+            }
+        }
         public IReadOnlyDictionary<CellType, CellTypeViewData> ViewData => _viewData;
         public IReadOnlyList<CellTypeViewData> ViewDataOrder => _viewDataOrder;
         public Palette Palette => _palette;
 
+        public event Action<CellTypeViewData> SelectedCellTypeViewDataChanged;
+
         private Dictionary<CellType, CellTypeViewData> _viewData = new();
-        [SerializeField][SerializeReference] private Palette _palette;
-        [SerializeField][SerializeReference] private CellType[] _skeys;
-        [SerializeField][SerializeReference] private CellTypeViewData[] _svalues;
-        [SerializeField][SerializeReference] private List<CellTypeViewData> _viewDataOrder;
+        private CellTypeViewData _selectedCellTypeViewData;
+        [SerializeReference] private Palette _palette;
+        [SerializeReference] private CellType[] _skeys;
+        [SerializeReference] private CellTypeViewData[] _svalues;
+        [SerializeReference] private List<CellTypeViewData> _viewDataOrder;
 
         public void CreateNewCellType()
         {

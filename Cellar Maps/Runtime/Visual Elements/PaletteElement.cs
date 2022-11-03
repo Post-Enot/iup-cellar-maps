@@ -1,5 +1,5 @@
-using UnityEngine;
 using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.UIElements;
 
@@ -10,7 +10,6 @@ namespace CellarMaps.UI
         public PaletteElement()
         {
             ColorField = new ColorField();
-            ColorField.AddToClassList("cm-color-field-palette-element");
             TypeNameField = new TextField
             {
                 label = "Type name",
@@ -19,10 +18,11 @@ namespace CellarMaps.UI
                 "сопоставляют её тип с необходимой заменой.\n" +
                 "Разные клетки с одинаковым названием типа сопоставляются с одной и той же заменой."
             };
-            TypeNameField.AddToClassList("cm-name-field-palette-element");
-            AddToClassList("cm-palette-element");
             Add(TypeNameField);
             Add(ColorField);
+            AddToClassList("cm-palette-element");
+            TypeNameField.AddToClassList("cm-palette-element__type-name-field");
+            ColorField.AddToClassList("cm-palette-element__color-field");
         }
 
         public readonly ColorField ColorField;

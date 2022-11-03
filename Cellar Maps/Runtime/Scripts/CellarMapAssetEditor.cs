@@ -10,19 +10,37 @@ namespace CellarMaps.EditorScripts
     [CustomEditor(typeof(CellarMapAsset))]
     public sealed class CellarMapAssetEditor : Editor
     {
-        private CellarMapAsset _cellarMap;
+        private CellarMapAsset _cellarMapAsset;
         private VisualElement _rootElement;
         private VisualTreeAsset _visualTree;
 
-        private IntegerField _widthField;
-        private IntegerField _heightField;
-        private Button _generateFieldButton;
-        private Field _field;
-        private UI.Palette _palette;
+        private IntegerField _uiWidthField;
+        private IntegerField _uiHeightField;
+        private Button _uiGenerateFieldButton;
+        private UI.CellarMap _uiCellarMap;
+        private UI.Palette _uiPalette;
+        private SelectedCellTypeIndicator _uiSelectedCellTypeIndicator;
+
+        public override VisualElement CreateInspectorGUI()
+        {
+            VisualElement root = _rootElement;
+            root.Clear();
+            _visualTree.CloneTree(root);
+            _uiWidthField = root.Q<IntegerField>("width-int-field");
+            _uiHeightField = root.Q<IntegerField>("height-int-field");
+            _uiCellarMap = root.Q<UI.CellarMap>("cellar-map");
+            _uiPalette = root.Q<UI.Palette>("palette");
+            _uiGenerateFieldButton = root.Q<Button>("generate-cellar-map-button");
+            _uiGenerateFieldButton.clicked += HandleGenerateFieldButtonClick;
+            _uiSelectedCellTypeIndicator = root.Q<SelectedCellTypeIndicator>("selected-cell-type-indicator");
+            SynchAssetDataWithEditor();
+            InitPaletteViewWithPresenter();
+            return root;
+        }
 
         private void OnEnable()
         {
-            _cellarMap = target as CellarMapAsset;
+            _cellarMapAsset = target as CellarMapAsset;
             _rootElement = new VisualElement();
             _visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
                 "Packages/com.iup.cellar-maps/Runtime/CellarMapsEditorWindow.uxml");
@@ -31,20 +49,10 @@ namespace CellarMaps.EditorScripts
             _rootElement.styleSheets.Add(uss);
         }
 
-        public override VisualElement CreateInspectorGUI()
+        private void OnDisable()
         {
-            VisualElement root = _rootElement;
-            root.Clear();
-            _visualTree.CloneTree(root);
-            _widthField = root.Q<IntegerField>("width-int-field");
-            _heightField = root.Q<IntegerField>("height-int-field");
-            _field = root.Q<Field>("field");
-            _palette = root.Q<UI.Palette>("palette");
-            _generateFieldButton = root.Q<Button>("generate-field-button");
-            _generateFieldButton.clicked += GenerateFieldButton_clicked;
-            SynchAssetDataWithEditor();
-            InitPaletteViewWithPresenter();
-            return root;
+            _cellarMapAsset.Map.CellsChanged -= HandleMapCellsChanged;
+            _cellarMapAsset.Map.Recreated -= HandleMapRecreation;
         }
 
         private void InitPaletteViewWithPresenter()
@@ -53,77 +61,132 @@ namespace CellarMaps.EditorScripts
             {
                 foreach (int index in indexes)
                 {
-                    _cellarMap.ViewPalette.CreateNewCellType();
+                    EditorUtility.SetDirty(_cellarMapAsset);
+                    _cellarMapAsset.ViewPalette.CreateNewCellType();
                 }
-                _palette.BindWith(_cellarMap.ViewPalette);
+                _uiPalette.BindWith(_cellarMapAsset.ViewPalette);
             }
             void RemoveItems(IEnumerable<int> indexes)
             {
+                EditorUtility.SetDirty(_cellarMapAsset);
                 foreach (int index in indexes)
                 {
-                    _cellarMap.ViewPalette.Remove(index);
+                    _cellarMapAsset.ViewPalette.Remove(index);
                 }
-                _palette.BindWith(_cellarMap.ViewPalette);
+                _uiPalette.BindWith(_cellarMapAsset.ViewPalette);
             }
             void SwapItemsInOrder(int aIndex, int bIndex)
             {
-                _cellarMap.ViewPalette.SwapItemsInOrder(aIndex, bIndex);
-                _palette.BindWith(_cellarMap.ViewPalette);
+                EditorUtility.SetDirty(_cellarMapAsset);
+                _cellarMapAsset.ViewPalette.SwapItemsInOrder(aIndex, bIndex);
+                _uiPalette.BindWith(_cellarMapAsset.ViewPalette);
             }
-            _palette.itemsAdded += AddItems;
-            _palette.itemsRemoved += RemoveItems;
-            _palette.itemIndexChanged += SwapItemsInOrder;
-            _palette.onItemsChosen += _palette_onItemsChosen;
+            _uiPalette.itemsAdded += AddItems;
+            _uiPalette.itemsRemoved += RemoveItems;
+            _uiPalette.itemIndexChanged += SwapItemsInOrder;
+            _uiPalette.onSelectionChange += HandlePaletteEventOnSelectionChange;
+            _cellarMapAsset.ViewPalette.SelectedCellTypeViewDataChanged +=
+                HandleViewPaletteSelectedCellTypeViewDataChanged;
+            _uiSelectedCellTypeIndicator.ResetButtonClicked += HandleSelectedCellTypeIndicatorResetButtonClick;
         }
 
-        private void _palette_onItemsChosen(IEnumerable<object> objects)
+        private void HandleSelectedCellTypeIndicatorResetButtonClick()
         {
-            foreach (var obj in objects)
-            {
-                Debug.Log(obj);
-            }
+            _cellarMapAsset.ViewPalette.SelectedCellTypeViewData = null;
+        }
+
+        private void HandleViewPaletteSelectedCellTypeViewDataChanged(CellTypeViewData viewData)
+        {
+            _uiSelectedCellTypeIndicator.IndicatedCellTypeViewData = viewData;
+        }
+
+        /// <summary>
+        /// Данное событие срабатывает в том числе, когда из списка удаляется выбранный элемент: 
+        /// в этом случае selecredObjects будет содержать всего один элемент со значением null.
+        /// </summary>
+        private void HandlePaletteEventOnSelectionChange(IEnumerable<object> selectedObjects)
+        {
+            IEnumerator<object> enumerator = selectedObjects.GetEnumerator();
+            enumerator.MoveNext();
+            _cellarMapAsset.ViewPalette.SelectedCellTypeViewData = enumerator.Current as CellTypeViewData;
         }
 
         private void SynchAssetDataWithEditor()
         {
-            _palette.BindWith(_cellarMap.ViewPalette);
+            _uiPalette.BindWith(_cellarMapAsset.ViewPalette);
             SynchField();
         }
 
         private void SynchField()
         {
-            _field.CreateField(_cellarMap.Map.Width, _cellarMap.Map.Height);
-            for (int y = 0; y < _cellarMap.Map.Height; y += 1)
+            _uiCellarMap.CreateMap(_cellarMapAsset.Map.Width, _cellarMapAsset.Map.Height);
+            for (int y = 0; y < _cellarMapAsset.Map.Height; y += 1)
             {
-                for (int x = 0; x < _cellarMap.Map.Width; x += 1)
+                for (int x = 0; x < _cellarMapAsset.Map.Width; x += 1)
                 {
-                    if (_cellarMap.Map[x, y] != null)
+                    if (_cellarMapAsset.Map[x, y] != null)
                     {
-                        _field[y, x].ViewData = _cellarMap.ViewPalette.ViewData[_cellarMap.Map[x, y]];
+                        _uiCellarMap[y, x].ViewData = _cellarMapAsset.ViewPalette.ViewData[_cellarMapAsset.Map[x, y]];
+                    }
+                    else
+                    {
+                        _uiCellarMap[y, x].ViewData = null;
                     }
                 }
             }
-            _field.InteractWithCell += HandleInteractWithCell;
+            _uiCellarMap.InteractWithCell += HandleInteractWithCell;
+            _cellarMapAsset.Map.CellsChanged += HandleMapCellsChanged;
+            _cellarMapAsset.Map.Recreated += HandleMapRecreation;
+            _uiWidthField.value = _cellarMapAsset.Map.Width;
+            _uiHeightField.value = _cellarMapAsset.Map.Height;
+        }
+
+        private void HandleMapRecreation()
+        {
+            _uiCellarMap.CreateMap(_cellarMapAsset.Map.Width, _cellarMapAsset.Map.Height);
+        }
+
+        private void HandleMapCellsChanged(Vector2Int[] changedCellsCoordinate)
+        {
+            EditorUtility.SetDirty(_cellarMapAsset);
+            Undo.RecordObject(_cellarMapAsset, "map cells changed");
+            foreach (Vector2Int coordinate in changedCellsCoordinate)
+            {
+                if (_cellarMapAsset.Map[coordinate] != null)
+                {
+                    _uiCellarMap[coordinate].ViewData = _cellarMapAsset.ViewPalette.ViewData[_cellarMapAsset.Map[coordinate]];
+                }
+                else
+                {
+                    _uiCellarMap[coordinate].ViewData = null;
+                }
+            }
         }
 
         private void HandleInteractWithCell(Vector2Int coordinate)
         {
-            CellTypeViewData viewData = _field[coordinate].ViewData;
-            if (viewData == null)
+            CellTypeViewData viewData = _uiCellarMap[coordinate].ViewData;
+            if (viewData == null || viewData != _uiSelectedCellTypeIndicator.IndicatedCellTypeViewData)
             {
-                _cellarMap.Map[coordinate] = _cellarMap.ViewPalette.ViewDataOrder[0].Type;
-                _field[coordinate].ViewData = _cellarMap.ViewPalette.ViewData[_cellarMap.Map[coordinate]];
+                if (_uiSelectedCellTypeIndicator.IndicatedCellTypeViewData == null)
+                {
+                    _cellarMapAsset.Map[coordinate] = null;
+                }
+                else
+                {
+                    _cellarMapAsset.Map[coordinate] = _uiSelectedCellTypeIndicator.IndicatedCellTypeViewData.Type;
+                }
             }
             else
             {
-                _cellarMap.Map[coordinate] = null;
-                _field[coordinate].ViewData = null;
+                _cellarMapAsset.Map[coordinate] = null;
             }
         }
 
-        private void GenerateFieldButton_clicked()
+        private void HandleGenerateFieldButtonClick()
         {
-            _field.CreateField(_widthField.value, _heightField.value);
+            EditorUtility.SetDirty(_cellarMapAsset);
+            _cellarMapAsset.Map.Recreate(_uiWidthField.value, _uiHeightField.value);
         }
     }
 }

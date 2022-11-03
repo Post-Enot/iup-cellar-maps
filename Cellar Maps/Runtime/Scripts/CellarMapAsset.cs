@@ -1,13 +1,19 @@
+using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace CellarMaps
 {
-    [CreateAssetMenu(fileName = "CellarMap", menuName = "Cellar CellarMap")]
+    [CreateAssetMenu(fileName = "CellarMapObject", menuName = "Cellar CellarMapObject")]
+    [Serializable]
     public class CellarMapAsset : ScriptableObject
     {
-        public CellarMap Map { get; private set; }
+        public CellarMap Map => _cellarMap;
         public Palette Palette => Map.Palette;
-        public ViewPalette ViewPalette { get; private set; }
+        public ViewPalette ViewPalette => _viewPalette;
+
+        [SerializeReference] private CellarMap _cellarMap;
+        [SerializeReference] private ViewPalette _viewPalette;
 
         private void OnEnable()
         {
@@ -15,8 +21,8 @@ namespace CellarMaps
             {
                 Palette palette = new();
                 _ = palette.CreateNewCellType();
-                ViewPalette = new ViewPalette(palette);
-                Map = new CellarMap(10, 10, palette);
+                _viewPalette = new ViewPalette(palette);
+                _cellarMap = new CellarMap(10, 10, palette);
             }
         }
     }
