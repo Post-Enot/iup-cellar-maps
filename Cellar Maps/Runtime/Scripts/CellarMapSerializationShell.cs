@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace CellarMaps
+namespace IUP_Toolkits.CellarMaps
 {
     [Serializable]
     public sealed class CellarMapSerializationShell : ISerializationCallbackReceiver

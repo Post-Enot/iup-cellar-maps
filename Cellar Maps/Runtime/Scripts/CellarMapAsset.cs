@@ -2,9 +2,9 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace CellarMaps
+namespace IUP_Toolkits.CellarMaps
 {
-    [CreateAssetMenu(fileName = "CellarMapObject", menuName = "Cellar CellarMapObject")]
+    [CreateAssetMenu(fileName = "CellarMapObject", menuName = "Cellar/CellarMapObject")]
     [Serializable]
     public class CellarMapAsset : ScriptableObject
     {

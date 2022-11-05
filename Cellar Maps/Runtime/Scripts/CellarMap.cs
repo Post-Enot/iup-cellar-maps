@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CellarMaps
+namespace IUP_Toolkits.CellarMaps
 {
     /// <summary>
     /// Представляет тип карты, состоящего из клеток.

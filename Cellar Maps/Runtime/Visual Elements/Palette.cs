@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine.Scripting;
 using UnityEngine.UIElements;
 
-namespace CellarMaps.UI
+namespace IUP_Toolkits.CellarMaps.UI
 {
     public sealed class Palette : ListView
     {

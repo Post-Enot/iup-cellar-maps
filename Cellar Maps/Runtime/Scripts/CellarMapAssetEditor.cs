@@ -1,11 +1,11 @@
-using CellarMaps.UI;
+using IUP_Toolkits.CellarMaps.UI;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace CellarMaps.EditorScripts
+namespace IUP_Toolkits.CellarMaps.EditorScripts
 {
     [CustomEditor(typeof(CellarMapAsset))]
     public sealed class CellarMapAssetEditor : Editor
