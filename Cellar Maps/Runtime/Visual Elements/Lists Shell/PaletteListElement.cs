@@ -5,11 +5,14 @@ using UnityEngine.UIElements;
 
 namespace IUP_Toolkits.CellarMaps.UI
 {
-    public sealed class PaletteElement : VisualElement
+    public sealed class PaletteListElement : ListViewElement<CellTypeViewData>
     {
-        public PaletteElement()
+        public PaletteListElement() : base()
         {
-            ColorField = new ColorField();
+            ColorField = new ColorField()
+            {
+                tooltip = "Цвет типа клетки. Служит исключительно для идентификации типа клетки в инспекторе."
+            };
             TypeNameField = new TextField
             {
                 label = "Type name",
@@ -25,12 +28,12 @@ namespace IUP_Toolkits.CellarMaps.UI
             ColorField.AddToClassList("cm-palette-element__color-field");
         }
 
-        public readonly ColorField ColorField;
-        public readonly TextField TypeNameField;
+        public ColorField ColorField { get; }
+        public TextField TypeNameField { get; }
 
         private CellTypeViewData _viewData;
 
-        public void BindWith(CellTypeViewData viewData)
+        public override void BindWith(CellTypeViewData viewData)
         {
             if (_viewData == null)
             {
@@ -54,7 +57,7 @@ namespace IUP_Toolkits.CellarMaps.UI
 
         #region UXML
         [Preserve]
-        public new sealed class UxmlFactory : UxmlFactory<PaletteElement, UxmlTraits> { }
+        public new sealed class UxmlFactory : UxmlFactory<PaletteListElement, UxmlTraits> { }
 
         [Preserve]
         public new sealed class UxmlTraits : VisualElement.UxmlTraits { }

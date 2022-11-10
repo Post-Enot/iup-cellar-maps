@@ -8,5 +8,8 @@
     "email": "ve.vyshegorodsky.cold@gmail.com",
     "url": "https://t.me/ProcyonNihil"
   },
-  "type": "tool"
+  "type": "tool",
+  "dependencies": {
+    "com.iup.matrices": "1.0.0"
+  }
 }

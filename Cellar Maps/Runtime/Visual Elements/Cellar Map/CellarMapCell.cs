@@ -14,7 +14,7 @@ namespace IUP_Toolkits.CellarMaps.UI
 
         public CellarMapCell(int x, int y, Action<Vector2Int> interactionCallback)
         {
-            _coordinate = new Vector2Int(x, y);
+            Coordinate = new Vector2Int(x, y);
             AddToClassList("cm-cellar-map-cell");
             UpdateTooltip();
             clicked += InvokeInteractionCallback;
@@ -31,17 +31,7 @@ namespace IUP_Toolkits.CellarMaps.UI
             }
         }
 
-        private void InvokeInteractionCallback()
-        {
-            _interactionCallback(Coordinate);
-        }
-
-        public Vector2Int Coordinate => _coordinate;
-
-        private readonly Vector2Int _coordinate;
-        private readonly StyleColor _defaultBackgroundColor;
-        private readonly Action<Vector2Int> _interactionCallback;
-
+        public Vector2Int Coordinate { get; }
         public CellTypeViewData ViewData
         {
             get => _viewData;
@@ -59,6 +49,10 @@ namespace IUP_Toolkits.CellarMaps.UI
                 InitViewData();
             }
         }
+        public CellType CellType => _viewData?.Type;
+
+        private readonly StyleColor _defaultBackgroundColor;
+        private readonly Action<Vector2Int> _interactionCallback;
 
         private CellTypeViewData _viewData;
 
@@ -77,7 +71,7 @@ namespace IUP_Toolkits.CellarMaps.UI
 
         private void UpdateTooltip()
         {
-            tooltip = $"{_coordinate}\n";
+            tooltip = $"{Coordinate}\n";
             if (_viewData == null)
             {
                 tooltip += "null";
@@ -86,6 +80,11 @@ namespace IUP_Toolkits.CellarMaps.UI
             {
                 tooltip += $"{_viewData.TypeName}";
             }
+        }
+
+        private void InvokeInteractionCallback()
+        {
+            _interactionCallback(Coordinate);
         }
 
         #region UXML

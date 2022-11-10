@@ -9,6 +9,10 @@ namespace IUP_Toolkits.CellarMaps.UI
     {
         public SelectedCellTypeIndicator()
         {
+            IndicatorBlock = new VisualElement()
+            {
+                tooltip = "Выбранный тип клетки, используемый в процессе рисования паттернов клеточных карт."
+            };
             Label = new Label()
             {
                 text = "Selected Cell Type: "
@@ -20,33 +24,49 @@ namespace IUP_Toolkits.CellarMaps.UI
             };
             ResetButton = new Button()
             {
-                text = "Reset"
+                text = "Reset",
+                tooltip = "Сбрасывает значение выбранного типа клетки до значения пустой клетки."
             };
             ResetButton.clicked += InvokeResetButtonClickedEvent;
-            Add(Label);
-            Add(IndicatorLabel);
+            Add(IndicatorBlock);
+            IndicatorBlock.Add(Label);
+            IndicatorBlock.Add(IndicatorLabel);
             Add(ResetButton);
+            IndicatorBlock.AddToClassList("cm-selected-cell-type-indicator__indicator-block");
             AddToClassList("cm-selected-cell-type-indicator");
             Label.AddToClassList("cm-selected-cell-type-indicator__label");
             IndicatorLabel.AddToClassList("cm-selected-cell-type-indicator__indicator");
             ResetButton.AddToClassList("cm-selected-cell-type-indicator__reset-button");
             _defaultBackgroundColor = style.backgroundColor;
         }
-        
+
         ~SelectedCellTypeIndicator()
         {
             ResetButton.clicked -= InvokeResetButtonClickedEvent;
+            if (_selectedCellTypeViewData != null)
+            {
+                _selectedCellTypeViewData.ViewDataUpdated -= UpdateView;
+            }
         }
 
-        public readonly Label Label;
-        public readonly Label IndicatorLabel;
-        public readonly Button ResetButton;
-        public CellTypeViewData IndicatedCellTypeViewData
+        public VisualElement IndicatorBlock { get; }
+        public Label Label { get; }
+        public Label IndicatorLabel { get; }
+        public Button ResetButton { get; }
+        public CellTypeViewData SelectedCellTypeViewData
         {
-            get => _indicatedCellTypeViewData;
+            get => _selectedCellTypeViewData;
             set
             {
-                _indicatedCellTypeViewData = value;
+                if (_selectedCellTypeViewData != null)
+                {
+                    _selectedCellTypeViewData.ViewDataUpdated -= UpdateView;
+                }
+                _selectedCellTypeViewData = value;
+                if (_selectedCellTypeViewData != null)
+                {
+                    _selectedCellTypeViewData.ViewDataUpdated += UpdateView;
+                }
                 UpdateView();
             }
         }
@@ -56,7 +76,7 @@ namespace IUP_Toolkits.CellarMaps.UI
             set
             {
                 _nullCellTypeViewDataStringValue = value;
-                if (_indicatedCellTypeViewData == null)
+                if (_selectedCellTypeViewData == null)
                 {
                     UpdateView();
                 }
@@ -66,15 +86,15 @@ namespace IUP_Toolkits.CellarMaps.UI
         public event Action ResetButtonClicked;
 
         private readonly StyleColor _defaultBackgroundColor;
-        private CellTypeViewData _indicatedCellTypeViewData;
+        private CellTypeViewData _selectedCellTypeViewData;
         private string _nullCellTypeViewDataStringValue;
 
         private void UpdateView()
         {
-            if (_indicatedCellTypeViewData != null)
+            if (_selectedCellTypeViewData != null)
             {
-                IndicatorLabel.text = _indicatedCellTypeViewData.TypeName;
-                IndicatorLabel.style.backgroundColor = _indicatedCellTypeViewData.Color;
+                IndicatorLabel.text = _selectedCellTypeViewData.TypeName;
+                IndicatorLabel.style.backgroundColor = _selectedCellTypeViewData.Color;
             }
             else
             {

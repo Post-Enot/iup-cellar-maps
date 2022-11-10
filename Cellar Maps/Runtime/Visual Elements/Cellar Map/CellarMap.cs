@@ -12,12 +12,12 @@ namespace IUP_Toolkits.CellarMaps.UI
             AddToClassList("cm-cellar-map");
         }
 
-        public CellarMapCell this[int y, int x] => _rows[y].FieldCells[x];
-        public CellarMapCell this[Vector2Int coordinate] => _rows[coordinate.y].FieldCells[coordinate.x];
+        public event Action<Vector2Int> InteractWithCell;
 
         private CellarMapRow[] _rows;
 
-        public event Action<Vector2Int> InteractWithCell;
+        public CellarMapCell this[int x, int y] => _rows[y].FieldCells[x];
+        public CellarMapCell this[Vector2Int coordinate] => _rows[coordinate.y].FieldCells[coordinate.x];
 
         public void CreateMap(int width, int height)
         {

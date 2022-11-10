@@ -12,8 +12,6 @@ namespace IUP_Toolkits.CellarMaps
             _color = new(30f / 255f, 30f / 255f, 30f / 255f, 1);
         }
 
-        public event Action ViewDataUpdated;
-
         /// <summary>
         /// Тип клетки.
         /// </summary>
@@ -40,7 +38,9 @@ namespace IUP_Toolkits.CellarMaps
             }
         }
 
-        [SerializeField][SerializeReference] private CellType _type;
+        public event Action ViewDataUpdated;
+
         [SerializeField] private Color _color;
+        [SerializeReference] private CellType _type;
     }
 }

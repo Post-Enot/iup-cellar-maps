@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace IUP_Toolkits.CellarMaps
@@ -18,62 +17,38 @@ namespace IUP_Toolkits.CellarMaps
         /// <exception cref="ArgumentException"></exception>
         public CellarMap(int width, int height, Palette palette)
         {
+            _layers = new CellarMapLayers(width, height);
+            _layers.CellsChanged += HandleCellsChangingOnLayers;
+            TopCells = new TopCellIndexer(_layers);
             _palette = palette;
-            Palette.CellTypeRemovedFromPalette += ClearFrom;
-            Recreate(width, height);
-        }
-
-        ~CellarMap()
-        {
-            CellsChanged = null;
+            Palette.CellTypeRemovedFromPalette += _layers.ClearAllLayersFrom;
         }
 
         /// <summary>
-        /// Ширина карты.
+        /// Ширина слоёв карты.
         /// </summary>
-        public int Width => _map.GetLength(1);
+        public int Width => _layers.Width;
         /// <summary>
-        /// Высота карты.
+        /// Высота слоёв карты.
         /// </summary>
-        public int Height => _map.GetLength(0);
+        public int Height => _layers.Height;
         /// <summary>
-        /// Палитра, клетки из которой используются для заполнения карты.
+        /// Палитра, клетки из которой используются для заполнения слоёв карты.
         /// </summary>
         public Palette Palette => _palette;
+        public ICellarMapLayers Layers => _layers;
+        public TopCellIndexer TopCells { get; private set; }
 
         /// <summary>
-        /// Вызывается при изменении значения клеток; передаёт в качестве аргумента массив со списком координат 
-        /// изменённых клеток.
+        /// Вызывается при изменении значения клеток.
         /// </summary>
-        public event Action<Vector2Int[]> CellsChanged;
+        public event Action CellsChanged;
         public event Action Recreated;
 
-        [SerializeField] private CellType[,] _map;
-        [SerializeField] private int _smapWidth;
-        [SerializeField][SerializeReference] private Palette _palette;
-        [SerializeField][SerializeReference] private CellType[] _smap;
+        [SerializeReference] private Palette _palette;
+        [SerializeReference] private CellarMapLayers _layers;
 
-        /// <summary>
-        /// Индексатор для доступа к клетке по координатам.
-        /// </summary>
-        /// <param name="x">Координата клетки по оси x.</param>
-        /// <param name="y">Координата клетки по оси y.</param>
-        /// <returns>Возвращает ссылку на тип клетки по указанным координатам.</returns>
-        public CellType this[int x, int y]
-        {
-            get => _map[y, x];
-            set => SetCellByCoordinate(value, x, y);
-        }
-        /// <summary>
-        /// Индексатор для доступа к клетке по координатам.
-        /// </summary>
-        /// <param name="coordinate">Координаты клетки.</param>
-        /// <returns>Возвращает ссылку на тип клетки по указанным координатам.</returns>
-        public CellType this[Vector2Int coordinate]
-        {
-            get => _map[coordinate.y, coordinate.x];
-            set => SetCellByCoordinate(value, coordinate.x, coordinate.y);
-        }
+        public ICellarMapLayer this[int layerIndex] => _layers[layerIndex];
 
         /// <summary>
         /// Пересоздаёт карту, сбрасывая все значения.
@@ -91,104 +66,22 @@ namespace IUP_Toolkits.CellarMaps
             {
                 throw new ArgumentException("Высота поля должна быть больше или равна 1.");
             }
-            _map = new CellType[height, width];
+            _layers.RecreateAllLayers(width, height);
             Recreated?.Invoke();
         }
 
-        /// <summary>
-        /// Очищает карту, присваивая всем клеткам значение null.
-        /// </summary>
-        public void Clear()
+        private void HandleCellsChangingOnLayers()
         {
-            Fill(null);
+            CellsChanged?.Invoke();
         }
 
-        /// <summary>
-        /// Заполняет карту, присваивая всем клеткам значение ссылки на переданный тип клетки.
-        /// </summary>
-        /// <param name="type">Ссылка на тип клетки-заполнителя.</param>
-        public void Fill(CellType type)
-        {
-            var coordinates = new List<Vector2Int>();
-            for (int y = 0; y < Height; y += 1)
-            {
-                for (int x = 0; x < Width; x += 1)
-                {
-                    if (_map[y, x] != type)
-                    {
-                        _map[y, x] = type;
-                        coordinates.Add(new Vector2Int(x, y));
-                    }
-                }
-            }
-        }
+        public void OnBeforeSerialize() { }
 
-        /// <summary>
-        /// Очищает карту от переданного типа клеток.
-        /// </summary>
-        /// <param name="removedType">Тип клетки, от которого необходимо очистить карту.</param>
-        public void ClearFrom(CellType removedType)
-        {
-            ReplaceWithOthers(removedType, null);
-        }
-
-        /// <summary>
-        /// Заменяет один тип клеток на другой.
-        /// </summary>
-        /// <param name="replace">Заменяемый тип клетки.</param>
-        /// <param name="other">Заменяющий тип клетки.</param>
-        private void ReplaceWithOthers(CellType replace, CellType other)
-        {
-            var coordinates = new List<Vector2Int>();
-            for (int y = 0; y < Height; y += 1)
-            {
-                for (int x = 0; x < Width; x += 1)
-                {
-                    if (_map[y, x] == replace)
-                    {
-                        _map[y, x] = other;
-                        coordinates.Add(new Vector2Int(x, y));
-                    }
-                }
-            }
-            CellsChanged?.Invoke(coordinates.ToArray());
-        }
-
-        private void SetCellByCoordinate(CellType type, int x, int y)
-        {
-            if (_map[y, x] != type)
-            {
-                _map[y, x] = type;
-                var coordinates = new Vector2Int[1] { new(x, y) };
-                CellsChanged?.Invoke(coordinates);
-            }
-        }
-
-        public void OnBeforeSerialize()
-        {
-            _smap = new CellType[Width * Height];
-            _smapWidth = Width;
-            for (int i = 0; i < _smap.Length; i += 1)
-            {
-                int x = i % Width;
-                int y = i / Width;
-               _smap[i] = _map[y, x];
-            }
-        }
-        
         public void OnAfterDeserialize()
         {
-            int height = _smap.Length / _smapWidth;
-            _map = new CellType[height, _smapWidth];
-            for (int y = 0; y < height; y += 1)
-            {
-                for (int x = 0; x < _smapWidth; x += 1)
-                {
-                    int i = (y * _smapWidth) + x;
-                    _map[y, x] = _smap[i];
-                }
-            }
-            Palette.CellTypeRemovedFromPalette += ClearFrom;
+            Palette.CellTypeRemovedFromPalette += _layers.ClearAllLayersFrom;
+            TopCells = new TopCellIndexer(_layers);
+            _layers.CellsChanged += HandleCellsChangingOnLayers;
         }
     }
 }

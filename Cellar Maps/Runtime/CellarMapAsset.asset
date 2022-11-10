@@ -10,147 +10,179 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3695bac85a0454c479bacb5f33ecfcbc, type: 3}
-  m_Name: CellarMapObject
+  m_Name: CellarMapAsset
   m_EditorClassIdentifier: 
   _cellarMap:
-    rid: 3484217177888522270
+    rid: 3484217345953759377
   _viewPalette:
-    rid: 3484217177888522271
+    rid: 3484217345953759378
+  _viewLayers:
+    rid: 3484217345953759379
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 3484217177888522270
-      type: {class: CellarMap, ns: CellarMaps, asm: NewAssembly}
-      data:
-        _smapWidth: 10
-        _palette:
-          rid: 3484217177888522272
-        _smap:
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-        - rid: -2
-    - rid: 3484217177888522271
-      type: {class: ViewPalette, ns: CellarMaps, asm: NewAssembly}
+    - rid: 3484217345953759377
+      type: {class: CellarMap, ns: IUP_Toolkits.CellarMaps, asm: NewAssembly}
       data:
         _palette:
-          rid: 3484217177888522272
+          rid: 3484217345953759380
+        _layers:
+          rid: 3484217345953759381
+    - rid: 3484217345953759378
+      type: {class: ViewPalette, ns: IUP_Toolkits.CellarMaps, asm: NewAssembly}
+      data:
+        _selectedCellTypeViewData:
+          rid: -2
+        _palette:
+          rid: 3484217345953759380
         _skeys:
-        - rid: 3484217177888522273
+        - rid: 3484217345953759382
         _svalues:
-        - rid: 3484217177888522274
+        - rid: 3484217345953759383
         _viewDataOrder:
-        - rid: 3484217177888522274
-    - rid: 3484217177888522272
-      type: {class: Palette, ns: CellarMaps, asm: NewAssembly}
+        - rid: 3484217345953759383
+    - rid: 3484217345953759379
+      type: {class: ViewLayers, ns: IUP_Toolkits.CellarMaps, asm: NewAssembly}
+      data:
+        _layers:
+          rid: 3484217345953759381
+        _viewData:
+        - rid: 3484217345953759384
+        _activeLayerViewData:
+          rid: 3484217345953759384
+    - rid: 3484217345953759380
+      type: {class: Palette, ns: IUP_Toolkits.CellarMaps, asm: NewAssembly}
       data:
         _scellTypes:
-        - rid: 3484217177888522273
-    - rid: 3484217177888522273
-      type: {class: CellType, ns: CellarMaps, asm: NewAssembly}
+        - rid: 3484217345953759382
+    - rid: 3484217345953759381
+      type: {class: CellarMapLayers, ns: IUP_Toolkits.CellarMaps, asm: NewAssembly}
+      data:
+        _layersWidth: 10
+        _layersHeight: 10
+        _layers:
+        - rid: 3484217345953759385
+    - rid: 3484217345953759382
+      type: {class: CellType, ns: IUP_Toolkits.CellarMaps, asm: NewAssembly}
       data:
         _typeName: noname
-    - rid: 3484217177888522274
-      type: {class: CellTypeViewData, ns: CellarMaps, asm: NewAssembly}
+    - rid: 3484217345953759383
+      type: {class: CellTypeViewData, ns: IUP_Toolkits.CellarMaps, asm: NewAssembly}
       data:
-        _type:
-          rid: 3484217177888522273
         _color: {r: 0.11764706, g: 0.11764706, b: 0.11764706, a: 1}
+        _type:
+          rid: 3484217345953759382
+    - rid: 3484217345953759384
+      type: {class: LayerViewData, ns: IUP_Toolkits.CellarMaps, asm: NewAssembly}
+      data:
+        _layerIndex: 0
+        _layerName: default-layer-0
+        _layer:
+          rid: 3484217345953759385
+    - rid: 3484217345953759385
+      type: {class: CellarMapLayer, ns: IUP_Toolkits.CellarMaps, asm: NewAssembly}
+      data:
+        _serializableWidth: 10
+        _serializableLayer:
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2
+        - rid: -2

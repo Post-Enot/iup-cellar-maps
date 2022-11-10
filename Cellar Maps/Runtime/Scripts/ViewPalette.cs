@@ -5,7 +5,7 @@ using UnityEngine;
 namespace IUP_Toolkits.CellarMaps
 {
     [Serializable]
-    public sealed class ViewPalette : ISerializationCallbackReceiver
+    public sealed class ViewPalette : ISerializationCallbackReceiver, IListViewShellBindable<CellTypeViewData>
     {
         public ViewPalette(Palette palette)
         {
@@ -27,11 +27,7 @@ namespace IUP_Toolkits.CellarMaps
                 if (_selectedCellTypeViewData != value)
                 {
                     _selectedCellTypeViewData = value;
-                    SelectedCellTypeViewDataChanged?.Invoke(_selectedCellTypeViewData);
-                }
-                else
-                {
-                    _selectedCellTypeViewData = value;
+                    SelectedCellTypeViewDataChanged?.Invoke(value);
                 }
             }
         }
@@ -42,13 +38,13 @@ namespace IUP_Toolkits.CellarMaps
         public event Action<CellTypeViewData> SelectedCellTypeViewDataChanged;
 
         private Dictionary<CellType, CellTypeViewData> _viewData = new();
-        private CellTypeViewData _selectedCellTypeViewData;
+        [SerializeReference] private CellTypeViewData _selectedCellTypeViewData;
         [SerializeReference] private Palette _palette;
         [SerializeReference] private CellType[] _skeys;
         [SerializeReference] private CellTypeViewData[] _svalues;
         [SerializeReference] private List<CellTypeViewData> _viewDataOrder;
 
-        public void CreateNewCellType()
+        public void Add()
         {
             CellType type = _palette.CreateNewCellType();
             var viewData = new CellTypeViewData(type);
@@ -56,16 +52,28 @@ namespace IUP_Toolkits.CellarMaps
             _viewDataOrder.Add(viewData);
         }
 
-        public void Remove(int index)
+        public void Remove(int typeIndex)
         {
-            CellTypeViewData viewData = _viewDataOrder[index];
-            _viewDataOrder.RemoveAt(index);
+            CellTypeViewData viewData = _viewDataOrder[typeIndex];
+            _viewDataOrder.RemoveAt(typeIndex);
             _palette.Remove(viewData.Type);
         }
 
-        public void SwapItemsInOrder(int aIndex, int bIndex)
+        public void MoveItemFromTo(int from, int to)
         {
-            (_viewDataOrder[bIndex], _viewDataOrder[aIndex]) = (_viewDataOrder[aIndex], _viewDataOrder[bIndex]);
+            CellTypeViewData item = _viewDataOrder[from];
+            _viewDataOrder.RemoveAt(from);
+            _viewDataOrder.Insert(to, item);
+        }
+
+        public List<CellTypeViewData> GetBindableList()
+        {
+            return new List<CellTypeViewData>(_viewDataOrder);
+        }
+
+        public void UpdateSelectedItem(CellTypeViewData selectedItemViewData)
+        {
+            SelectedCellTypeViewData = selectedItemViewData;
         }
 
         public void OnBeforeSerialize()
