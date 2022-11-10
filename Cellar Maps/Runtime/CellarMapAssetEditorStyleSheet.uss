@@ -1,3 +1,19 @@
+.unity-list-view {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-left: 3px;
+    margin-right: 5px;
+    margin-top: 4px;
+    margin-bottom: 5px;
+}
+
+.unity-list-view__size-field {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 .cm-cellar-map {
     align-items: flex-start;
     flex-grow: 1;
@@ -31,35 +47,23 @@
     border-bottom-right-radius: 0;
 }
 
-.cm-palette-element {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-top-width: 1px;
-    border-bottom-width: 1px;
+.cm-list-view-element {
+    flex-grow: 1;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
     border-left-color: rgb(35, 35, 35);
     border-right-color: rgb(35, 35, 35);
     border-top-color: rgb(35, 35, 35);
     border-bottom-color: rgb(35, 35, 35);
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-direction: column;
-}
-
-.cm-palette {
-    justify-content: flex-start;
-    flex-grow: 1;
-    margin-bottom: 5px;
-    margin-left: 3px;
-    margin-right: 3px;
-    margin-top: 4px;
-}
-
-.cm-palette > .unity-list-view__size-field {
-    margin-right: 0;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 #button-block > .unity-integer-field {
@@ -81,16 +85,21 @@
     padding-bottom: 5px;
 }
 
-.cm-selected-cell-type-indicator > .cm-selected-cell-type-indicator__label {
+.cm-selected-cell-type-indicator__indicator-block {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.cm-selected-cell-type-indicator__label {
     padding-left: 0;
     padding-right: 2px;
     padding-top: 2px;
     padding-bottom: 2px;
 }
 
-.cm-selected-cell-type-indicator > .cm-selected-cell-type-indicator__indicator {
-    padding-left: 2px;
-    padding-right: 2px;
+.cm-selected-cell-type-indicator__indicator {
+    padding-left: 6px;
+    padding-right: 6px;
     padding-top: 1px;
     padding-bottom: 1px;
     border-left-width: 1px;
@@ -105,4 +114,8 @@
     border-right-color: rgb(51, 51, 51);
     border-top-color: rgb(51, 51, 51);
     border-bottom-color: rgb(51, 51, 51);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 1px;
+    margin-bottom: 1px;
 }
