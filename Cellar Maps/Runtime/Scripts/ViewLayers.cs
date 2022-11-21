@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace IUP_Toolkits.CellarMaps
+namespace IUP.Toolkits.CellarMaps
 {
     [Serializable]
     public sealed class ViewLayers : IListViewShellBindable<LayerViewData>
@@ -52,8 +52,11 @@ namespace IUP_Toolkits.CellarMaps
         public void Remove(int layerIndex)
         {
             _layers.RemoveLayer(layerIndex);
-            _viewData.RemoveAt(layerIndex);
-            ResetIndexes();
+            if (_viewData.Count > 1)
+            {
+                _viewData.RemoveAt(layerIndex);
+                ResetIndexes();
+            }
         }
 
         public void MoveItemFromTo(int from, int to)

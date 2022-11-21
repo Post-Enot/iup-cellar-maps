@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine.UIElements;
 
-namespace IUP_Toolkits.CellarMaps.UI
+namespace IUP.Toolkits.CellarMaps.UI
 {
     public abstract class ListViewShell<T1, T2> : ListView where T1 : ListViewElement<T2>, new() where T2: class
     {

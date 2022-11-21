@@ -1,10 +1,9 @@
-using IUP_Toolkits.Matrices;
+using IUP.Toolkits.Matrices;
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using UnityEngine;
 
-namespace IUP_Toolkits.CellarMaps
+namespace IUP.Toolkits.CellarMaps
 {
     [Serializable]
     public sealed class CellarMapLayer : ISerializationCallbackReceiver, ICellarMapLayer
@@ -12,13 +11,11 @@ namespace IUP_Toolkits.CellarMaps
         public CellarMapLayer(int width, int height)
         {
             Layer = new Matrix<CellType>(width, height);
-            MappingKeys = new MappingKeysIndexer(Layer);
         }
 
         public int Width => Layer.Width;
         public int Height => Layer.Height;
         public Matrix<CellType> Layer { get; private set; }
-        public IReadonlyMatrixIndexer<string> MappingKeys { get; }
 
         /// <summary>
         /// Событие, уведомляющее об изменениях клеток на слое. Первый аргумент - сам слой, второй - 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace IUP_Toolkits.CellarMaps
+namespace IUP.Toolkits.CellarMaps
 {
     public interface ICellarMapLayers
     {

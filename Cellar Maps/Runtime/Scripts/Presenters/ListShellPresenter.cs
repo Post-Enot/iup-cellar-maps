@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace IUP_Toolkits.CellarMaps.UI
+namespace IUP.Toolkits.CellarMaps.UI
 {
     public sealed class ListShellPresenter<T1, T2> : IPresenter
         where T1 : ListViewElement<T2>, new() where T2 : class

@@ -1,9 +1,9 @@
-using IUP_Toolkits.CellarMaps.UI;
+using IUP.Toolkits.CellarMaps.UI;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace IUP_Toolkits.CellarMaps.EditorScripts
+namespace IUP.Toolkits.CellarMaps.EditorScripts
 {
     [CustomEditor(typeof(CellarMapAsset))]
     public sealed class CellarMapAssetEditor : Editor
@@ -31,6 +31,12 @@ namespace IUP_Toolkits.CellarMaps.EditorScripts
             root.Clear();
             _visualTree.CloneTree(root);
             InitUI_References(root);
+            if (_layersPresenter != null)
+            {
+                _layersPresenter.OnDisable();
+                _palettePresenter.OnDisable();
+                _cellarMapPresenter.OnDisable();
+            }
             _layersPresenter = new(_cellarMapAsset.ViewLayers, _uiLayers);
             _palettePresenter = new(_cellarMapAsset.ViewPalette, _uiPalette);
             _cellarMapPresenter = new(
@@ -44,6 +50,7 @@ namespace IUP_Toolkits.CellarMaps.EditorScripts
             _uiGenerateFieldButton.clicked += HandleGenerateFieldButtonClick;
             InitSelectedCellTypeIndicator();
             InitActiveLayerIndicator();
+            EditorUtility.SetDirty(_cellarMapAsset);
             return root;
         }
 
@@ -56,13 +63,6 @@ namespace IUP_Toolkits.CellarMaps.EditorScripts
             StyleSheet uss = AssetDatabase.LoadAssetAtPath<StyleSheet>(
                 "Packages/com.iup.cellar-maps/Runtime/CellarMapAssetEditorStyleSheet.uss");
             _rootElement.styleSheets.Add(uss);
-        }
-
-        private void OnDisable()
-        {
-            _layersPresenter.OnDisable();
-            _palettePresenter.OnDisable();
-            _cellarMapPresenter.OnDisable();
         }
 
         private void InitUI_References(VisualElement root)

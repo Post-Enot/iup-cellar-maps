@@ -1,6 +1,6 @@
 using UnityEngine.UIElements;
 
-namespace IUP_Toolkits.CellarMaps.UI
+namespace IUP.Toolkits.CellarMaps.UI
 {
     public abstract class ListViewElement<T> : VisualElement where T : class
     {

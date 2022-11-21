@@ -1,7 +1,6 @@
-using IUP_Toolkits.Matrices;
 using UnityEngine;
 
-namespace IUP_Toolkits.CellarMaps
+namespace IUP.Toolkits.CellarMaps
 {
     public interface ICellarMapLayer
     {
@@ -13,11 +12,6 @@ namespace IUP_Toolkits.CellarMaps
         /// Высота слоя.
         /// </summary>
         public int Height { get; }
-        /// <summary>
-        /// Индексатор для доступа к названиям типов клеток для дальнейшего сопоставления ключей 
-        /// классами-генераторами.
-        /// </summary>
-        public IReadonlyMatrixIndexer<string> MappingKeys { get; }
 
         /// <summary>
         /// Индексатор для доступа к клетке по координатам.

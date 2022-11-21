@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace IUP_Toolkits.CellarMaps
+namespace IUP.Toolkits.CellarMaps
 {
     /// <summary>
     /// Представляет тип карты, состоящего из клеток.

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace IUP_Toolkits.CellarMaps
+namespace IUP.Toolkits.CellarMaps
 {
     /// <summary>
     /// Интерфейс, указывающий, что реализующий его класс возможно связать с представлением списка.

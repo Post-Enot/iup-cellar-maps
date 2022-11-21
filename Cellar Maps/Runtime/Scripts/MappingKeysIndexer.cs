@@ -1,7 +1,7 @@
-using IUP_Toolkits.Matrices;
+using IUP.Toolkits.Matrices;
 using UnityEngine;
 
-namespace IUP_Toolkits.CellarMaps
+namespace IUP.Toolkits.CellarMaps
 {
     /// <summary>
     /// Индексатор для доступа к названиям типов для дальнейшего сопоставления в классах-генераторах.

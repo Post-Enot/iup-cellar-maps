@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace IUP_Toolkits.CellarMaps
+namespace IUP.Toolkits.CellarMaps
 {
     [Serializable]
     public sealed class ViewPalette : ISerializationCallbackReceiver, IListViewShellBindable<CellTypeViewData>

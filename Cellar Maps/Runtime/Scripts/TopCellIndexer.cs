@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace IUP_Toolkits.CellarMaps
+namespace IUP.Toolkits.CellarMaps
 {
     public class TopCellIndexer
     {

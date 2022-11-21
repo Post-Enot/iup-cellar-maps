@@ -1,8 +1,7 @@
-using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.UIElements;
 
-namespace IUP_Toolkits.CellarMaps.UI
+namespace IUP.Toolkits.CellarMaps.UI
 {
     public sealed class ActiveLayerIndicator : VisualElement
     {

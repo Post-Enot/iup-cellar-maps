@@ -1,4 +1,4 @@
-namespace IUP_Toolkits.CellarMaps.UI
+namespace IUP.Toolkits.CellarMaps.UI
 {
     public interface IPresenter
     {

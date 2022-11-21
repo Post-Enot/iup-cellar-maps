@@ -1,15 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <Style src="project://database/Assets/CellarMapAssetEditorStyleSheet.uss?fileID=7433441132597879392&amp;guid=9a6cd4e2d98a5fb4f9832cb025fd4e8b&amp;type=3#CellarMapAssetEditorStyleSheet" />
-    <IUP_Toolkits.CellarMaps.UI.PaletteList focusable="true" name="palette" style="margin-bottom: 0;" />
-    <IUP_Toolkits.CellarMaps.UI.LayersList focusable="true" name="layers" style="margin-top: 3px;" />
+    <IUP.Toolkits.CellarMaps.UI.PaletteList focusable="true" name="palette" style="margin-bottom: 0;" />
+    <IUP.Toolkits.CellarMaps.UI.LayersList focusable="true" name="layers" style="margin-top: 3px;" />
     <ui:VisualElement name="indicators-block" style="border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-left-color: rgb(35, 35, 35); border-right-color: rgb(35, 35, 35); border-top-color: rgb(35, 35, 35); border-bottom-color: rgb(35, 35, 35); margin-left: 3px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px; background-color: rgb(51, 51, 51);">
-        <IUP_Toolkits.CellarMaps.UI.SelectedCellTypeIndicator name="selected-cell-type-indicator" style="padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 1px; height: 24px;" />
-        <IUP_Toolkits.CellarMaps.UI.ActiveLayerIndicator name="active-layer-indicator" style="padding-left: 3px; padding-right: 3px; padding-top: 1px; padding-bottom: 3px; flex-direction: row; height: 24px; align-items: center;" />
+        <IUP.Toolkits.CellarMaps.UI.SelectedCellTypeIndicator name="selected-cell-type-indicator" style="padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 1px; height: 24px;" />
+        <IUP.Toolkits.CellarMaps.UI.ActiveLayerIndicator name="active-layer-indicator" style="padding-left: 3px; padding-right: 3px; padding-top: 1px; padding-bottom: 3px; flex-direction: row; height: 24px; align-items: center;" />
     </ui:VisualElement>
     <ui:VisualElement name="button-block" style="flex-grow: 0; flex-shrink: 0; margin-left: 3px; margin-right: 5px;">
         <uie:IntegerField label="Height" value="42" name="height-int-field" style="flex-grow: 1; flex-shrink: 1; margin-right: 0; margin-left: 0;" />
         <uie:IntegerField label="Width" value="42" name="width-int-field" style="flex-grow: 1; flex-shrink: 1; margin-left: 0; margin-right: 0;" />
         <ui:Button text="Generate Map" display-tooltip-when-elided="true" name="generate-cellar-map-button" style="flex-shrink: 1; flex-grow: 1; margin-left: 0; margin-right: 0;" />
     </ui:VisualElement>
-    <IUP_Toolkits.CellarMaps.UI.CellarMap name="cellar-map" />
+    <IUP.Toolkits.CellarMaps.UI.CellarMap name="cellar-map" />
 </ui:UXML>

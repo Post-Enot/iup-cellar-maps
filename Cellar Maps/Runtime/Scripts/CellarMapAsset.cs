@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace IUP_Toolkits.CellarMaps
+namespace IUP.Toolkits.CellarMaps
 {
     [CreateAssetMenu(fileName = "CellarMapAsset", menuName = "CellarMapAsset")]
     [Serializable]
