@@ -50,6 +50,7 @@ namespace IUP.Toolkits.CellarMaps.EditorScripts
             _uiGenerateFieldButton.clicked += HandleGenerateFieldButtonClick;
             InitSelectedCellTypeIndicator();
             InitActiveLayerIndicator();
+            InitMapSizeFields();
             EditorUtility.SetDirty(_cellarMapAsset);
             return root;
         }
@@ -105,6 +106,12 @@ namespace IUP.Toolkits.CellarMaps.EditorScripts
         private void HandleViewPaletteSelectedCellTypeViewDataChanged(CellTypeViewData viewData)
         {
             _uiSelectedCellTypeIndicator.SelectedCellTypeViewData = viewData;
+        }
+
+        private void InitMapSizeFields()
+        {
+            _uiWidthField.value = _cellarMapAsset.Map.Width;
+            _uiHeightField.value = _cellarMapAsset.Map.Height;
         }
 
         private void HandleGenerateFieldButtonClick()
