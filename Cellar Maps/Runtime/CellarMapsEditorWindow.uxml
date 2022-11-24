@@ -6,10 +6,10 @@
         <IUP.Toolkits.CellarMaps.UI.SelectedCellTypeIndicator name="selected-cell-type-indicator" style="padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 1px; height: 24px;" />
         <IUP.Toolkits.CellarMaps.UI.ActiveLayerIndicator name="active-layer-indicator" style="padding-left: 3px; padding-right: 3px; padding-top: 1px; padding-bottom: 3px; flex-direction: row; height: 24px; align-items: center;" />
     </ui:VisualElement>
-    <ui:VisualElement name="recreate-block" style="flex-grow: 0; flex-shrink: 0; margin-left: 3px; margin-right: 5px;">
-        <uie:IntegerField label="Height" value="42" name="recreate-height-int-field" style="flex-grow: 1; flex-shrink: 1; margin-right: 0; margin-left: 0;" />
+    <ui:Foldout text="Recreate" name="recreate-block" value="false">
         <uie:IntegerField label="Width" value="42" name="recreate-width-int-field" style="flex-grow: 1; flex-shrink: 1; margin-left: 0; margin-right: 0;" />
+        <uie:IntegerField label="Height" value="42" name="recreate-height-int-field" style="flex-grow: 1; flex-shrink: 1; margin-right: 0; margin-left: 0;" />
         <ui:Button text="Recreate Map" display-tooltip-when-elided="true" name="recreate-cellar-map-button" style="flex-shrink: 1; flex-grow: 1; margin-left: 0; margin-right: 0;" />
-    </ui:VisualElement>
+    </ui:Foldout>
     <IUP.Toolkits.CellarMaps.UI.CellarMap name="cellar-map" />
 </ui:UXML>
