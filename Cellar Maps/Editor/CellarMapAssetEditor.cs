@@ -12,9 +12,9 @@ namespace IUP.Toolkits.CellarMaps.EditorScripts
         private VisualElement _rootElement;
         private VisualTreeAsset _visualTree;
 
-        private IntegerField _uiWidthField;
-        private IntegerField _uiHeightField;
-        private Button _uiGenerateFieldButton;
+        private IntegerField _uiRecreateWidthField;
+        private IntegerField _uiRecreateHeightField;
+        private Button _uiRecreateMapButton;
         private UI.CellarMap _uiCellarMap;
         private PaletteList _uiPalette;
         private LayersList _uiLayers;
@@ -47,10 +47,10 @@ namespace IUP.Toolkits.CellarMaps.EditorScripts
             _layersPresenter.OnEnable();
             _palettePresenter.OnEnable();
             _cellarMapPresenter.OnEnable();
-            _uiGenerateFieldButton.clicked += HandleGenerateFieldButtonClick;
+            _uiRecreateMapButton.clicked += RecreateMap;
             InitSelectedCellTypeIndicator();
             InitActiveLayerIndicator();
-            InitMapSizeFields();
+            InitRecreateMapSizeFields();
             EditorUtility.SetDirty(_cellarMapAsset);
             return root;
         }
@@ -68,11 +68,11 @@ namespace IUP.Toolkits.CellarMaps.EditorScripts
 
         private void InitUI_References(VisualElement root)
         {
-            _uiWidthField = root.Q<IntegerField>("width-int-field");
-            _uiHeightField = root.Q<IntegerField>("height-int-field");
+            _uiRecreateWidthField = root.Q<IntegerField>("recreate-width-int-field");
+            _uiRecreateHeightField = root.Q<IntegerField>("recreate-height-int-field");
             _uiCellarMap = root.Q<UI.CellarMap>("cellar-map");
             _uiPalette = root.Q<UI.PaletteList>("palette");
-            _uiGenerateFieldButton = root.Q<Button>("generate-cellar-map-button");
+            _uiRecreateMapButton = root.Q<Button>("recreate-cellar-map-button");
             _uiSelectedCellTypeIndicator = root.Q<SelectedCellTypeIndicator>("selected-cell-type-indicator");
             _uiActiveLayerIndicator = root.Q<ActiveLayerIndicator>("active-layer-indicator");
             _uiLayers = root.Q<LayersList>("layers");
@@ -108,16 +108,16 @@ namespace IUP.Toolkits.CellarMaps.EditorScripts
             _uiSelectedCellTypeIndicator.SelectedCellTypeViewData = viewData;
         }
 
-        private void InitMapSizeFields()
+        private void InitRecreateMapSizeFields()
         {
-            _uiWidthField.value = _cellarMapAsset.Map.Width;
-            _uiHeightField.value = _cellarMapAsset.Map.Height;
+            _uiRecreateWidthField.value = _cellarMapAsset.Map.Width;
+            _uiRecreateHeightField.value = _cellarMapAsset.Map.Height;
         }
 
-        private void HandleGenerateFieldButtonClick()
+        private void RecreateMap()
         {
             EditorUtility.SetDirty(_cellarMapAsset);
-            _cellarMapAsset.Map.Recreate(_uiWidthField.value, _uiHeightField.value);
+            _cellarMapAsset.Map.Recreate(_uiRecreateWidthField.value, _uiRecreateHeightField.value);
         }
     }
 }
