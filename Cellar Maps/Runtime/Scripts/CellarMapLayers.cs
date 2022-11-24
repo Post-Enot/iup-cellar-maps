@@ -35,7 +35,6 @@ namespace IUP.Toolkits.CellarMaps
             layer.CellsChanged += HandleCellsChangingOnLayer;
             _layers.Add(layer);
             LayerAdded?.Invoke();
-            Debug.Log($"Кол-во слоёв: {_layers.Count}");
         }
 
         /// <summary>
@@ -55,7 +54,6 @@ namespace IUP.Toolkits.CellarMaps
             {
                 _layers[0].Clear();
             }
-            Debug.Log($"Кол-во слоёв: {_layers.Count}");
         }
 
         public void MoveLayerFromTo(int from, int to)
@@ -63,7 +61,6 @@ namespace IUP.Toolkits.CellarMaps
             CellarMapLayer item = _layers[from];
             _layers.RemoveAt(from);
             _layers.Insert(to, item);
-            Debug.Log($"Кол-во слоёв: {_layers.Count}");
         }
 
         public void FillAllLayers(CellType type)

@@ -58,19 +58,12 @@ namespace IUP.Toolkits.CellarMaps
 
         public void Fill(CellType type)
         {
-            for (int y = 0; y < Height; y += 1)
-            {
-                for (int x = 0; x < Width; x += 1)
-                {
-                    Layer[x, y] = type;
-                }
-            }
+            Layer.InitAllElements((int x, int y) => type);
             CellsChanged?.Invoke();
         }
 
         public void ReplaceWithOther(CellType replace, CellType other)
         {
-            var coordinates = new List<Vector2Int>();
             for (int y = 0; y < Height; y += 1)
             {
                 for (int x = 0; x < Width; x += 1)

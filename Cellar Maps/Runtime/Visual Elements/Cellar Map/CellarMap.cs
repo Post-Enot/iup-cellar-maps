@@ -26,7 +26,7 @@ namespace IUP.Toolkits.CellarMaps.UI
                 ClearMap();
             }
             _rows = new CellarMapRow[height];
-            for (int i = 0; i < _rows.Length; i += 1)
+            for (int i = _rows.Length - 1; i >= 0; i -= 1)
             {
                 _rows[i] = new CellarMapRow();
                 Add(_rows[i]);
