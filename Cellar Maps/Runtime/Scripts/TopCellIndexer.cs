@@ -11,9 +11,9 @@ namespace IUP.Toolkits.CellarMaps
 
         private readonly CellarMapLayers _layers;
 
-        public CellType this[int topLayerIndex, Vector2Int coordinate]
+        public (CellType, bool) this[int topLayerIndex, Vector2Int coordinate]
             => this[topLayerIndex, coordinate.x, coordinate.y];
-        public CellType this[int topLayerIndex, int x, int y]
+        public (CellType, bool) this[int topLayerIndex, int x, int y]
         {
             get
             {
@@ -21,10 +21,10 @@ namespace IUP.Toolkits.CellarMaps
                 {
                     if (_layers[layerIndex][x, y] != null)
                     {
-                        return _layers[layerIndex][x, y];
+                        return (_layers[layerIndex][x, y], layerIndex == topLayerIndex);
                     }
                 }
-                return null;
+                return (null, false);
             }
         }
     }

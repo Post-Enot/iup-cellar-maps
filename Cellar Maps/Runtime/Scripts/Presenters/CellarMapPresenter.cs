@@ -17,11 +17,17 @@ namespace IUP.Toolkits.CellarMaps.UI
             SynchMapViewWithModel();
         }
 
+        public CellarMaps.CellarMap Model { get; }
+        public CellarMap View { get; }
+        public ViewPalette ViewPalette { get; }
+        public ViewLayers ViewLayers { get; }
+
         public void OnEnable()
         {
             View.InteractWithCell += HandleInteractWithCell;
             Model.CellsChanged += UpdateMapView;
             Model.Recreated += ReinitMapView;
+            Model.Resized += SynchMapViewWithModel;
             ViewLayers.ActiveLayerChanged += ViewLayers_ActiveLayerChanged;
         }
 
@@ -30,6 +36,7 @@ namespace IUP.Toolkits.CellarMaps.UI
             View.InteractWithCell -= HandleInteractWithCell;
             Model.CellsChanged -= UpdateMapView;
             Model.Recreated -= ReinitMapView;
+            Model.Resized -= SynchMapViewWithModel;
             ViewLayers.ActiveLayerChanged -= ViewLayers_ActiveLayerChanged;
         }
 
@@ -38,11 +45,6 @@ namespace IUP.Toolkits.CellarMaps.UI
             UpdateMapView();
         }
 
-        public CellarMaps.CellarMap Model { get; }
-        public CellarMap View { get; }
-        public ViewPalette ViewPalette { get; }
-        public ViewLayers ViewLayers { get; }
-
         private void SynchMapViewWithModel()
         {
             View.CreateMap(Model.Width, Model.Height);
@@ -50,14 +52,15 @@ namespace IUP.Toolkits.CellarMaps.UI
             {
                 for (int x = 0; x < Model.Width; x += 1)
                 {
-                    CellType topCellType = Model.TopCells[ViewLayers.ActiveLayerViewData.LayerIndex, x, y];
+                    (CellType topCellType, bool isOnActiveLayer) =
+                        Model.TopCells[ViewLayers.ActiveLayerViewData.LayerIndex, x, y];
                     if (topCellType != null)
                     {
-                        View[x, y].ViewData = ViewPalette.ViewData[topCellType];
+                        View[x, y].SetViewData(ViewPalette.ViewData[topCellType], isOnActiveLayer);
                     }
                     else
                     {
-                        View[x, y].ViewData = null;
+                        View[x, y].SetViewData(null, false);
                     }
                 }
             }
@@ -103,17 +106,15 @@ namespace IUP.Toolkits.CellarMaps.UI
 
         private void UpdateMapViewByCoordinate(int x, int y)
         {
-            CellType topCellType = Model.TopCells[ViewLayers.ActiveLayerViewData.LayerIndex, x, y];
-            if (View[x, y].CellType != topCellType)
+            (CellType topCellType, bool isOnActiveLayer) 
+            = Model.TopCells[ViewLayers.ActiveLayerViewData.LayerIndex, x, y];
+            if (topCellType != null)
             {
-                if (topCellType != null)
-                {
-                    View[x, y].ViewData = ViewPalette.ViewData[topCellType];
-                }
-                else
-                {
-                    View[x, y].ViewData = null;
-                }
+                View[x, y].SetViewData(ViewPalette.ViewData[topCellType], isOnActiveLayer);
+            }
+            else
+            {
+                View[x, y].SetViewData(null, false);
             }
         }
     }

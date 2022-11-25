@@ -24,43 +24,48 @@ namespace IUP.Toolkits.CellarMaps.UI
 
         ~CellarMapCell()
         {
-            if (_viewData != null)
+            if (ViewData != null)
             {
-                _viewData.ViewDataUpdated -= InitViewData;
+                ViewData.ViewDataUpdated -= InitViewData;
                 clicked -= InvokeInteractionCallback;
             }
         }
 
         public Vector2Int Coordinate { get; }
-        public CellTypeViewData ViewData
-        {
-            get => _viewData;
-            set
-            {
-                if (_viewData != null)
-                {
-                    _viewData.ViewDataUpdated -= InitViewData;
-                }
-                _viewData = value;
-                if (_viewData != null)
-                {
-                    _viewData.ViewDataUpdated += InitViewData;
-                }
-                InitViewData();
-            }
-        }
-        public CellType CellType => _viewData?.Type;
+        public CellTypeViewData ViewData { get; private set; }
+        public bool IsOnActiveLayer { get; private set; }
+        public CellType CellType => ViewData?.Type;
 
         private readonly StyleColor _defaultBackgroundColor;
         private readonly Action<Vector2Int> _interactionCallback;
 
-        private CellTypeViewData _viewData;
+        public void SetViewData(CellTypeViewData viewData, bool isOnActiveLayer)
+        {
+            if (ViewData != null)
+            {
+                ViewData.ViewDataUpdated -= InitViewData;
+            }
+            ViewData = viewData;
+            IsOnActiveLayer = isOnActiveLayer;
+            if (ViewData != null)
+            {
+                ViewData.ViewDataUpdated += InitViewData;
+            }
+            InitViewData();
+        }
 
         private void InitViewData()
         {
-            if (_viewData != null)
+            if (ViewData != null)
             {
-                style.backgroundColor = new StyleColor(_viewData.Color);
+                if (IsOnActiveLayer)
+                {
+                    style.backgroundColor = new StyleColor(ViewData.Color);
+                }
+                else
+                {
+                    style.backgroundColor = CalculateBackgroundColor(ViewData.Color);
+                }
             }
             else
             {
@@ -69,16 +74,30 @@ namespace IUP.Toolkits.CellarMaps.UI
             UpdateTooltip();
         }
 
+        private StyleColor CalculateBackgroundColor(Color color)
+        {
+            Color.RGBToHSV(color, out float H, out float S, out float V);
+            if (V >= 0.5f)
+            {
+                V -= 0.05f;
+            }
+            else
+            {
+                V += 0.05f;
+            }
+            return new StyleColor(Color.HSVToRGB(H, S, V));
+        }
+
         private void UpdateTooltip()
         {
             tooltip = $"{Coordinate}\n";
-            if (_viewData == null)
+            if (ViewData == null)
             {
                 tooltip += "null";
             }
             else
             {
-                tooltip += $"{_viewData.TypeName}";
+                tooltip += $"{ViewData.TypeName}";
             }
         }
 
