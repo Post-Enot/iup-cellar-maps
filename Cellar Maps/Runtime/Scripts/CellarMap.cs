@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using IUP.Toolkits.Matrices;
 
 namespace IUP.Toolkits.CellarMaps
 {
@@ -44,6 +45,7 @@ namespace IUP.Toolkits.CellarMaps
         /// </summary>
         public event Action CellsChanged;
         public event Action Recreated;
+        public event Action Resized;
 
         [SerializeReference] private Palette _palette;
         [SerializeReference] private CellarMapLayers _layers;
@@ -68,6 +70,16 @@ namespace IUP.Toolkits.CellarMaps
             }
             _layers.RecreateAllLayers(width, height);
             Recreated?.Invoke();
+        }
+
+        public void Resize(
+            int widthOffset,
+            int heightOffset,
+            WidthResizeRule widthResizeRule,
+            HeightResizeRule heightResizeRule)
+        {
+            _layers.ResizeAllLayers(widthOffset, heightOffset, widthResizeRule, heightResizeRule);
+            Resized?.Invoke();
         }
 
         private void HandleCellsChangingOnLayers()

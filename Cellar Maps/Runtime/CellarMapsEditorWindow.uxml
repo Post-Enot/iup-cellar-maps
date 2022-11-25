@@ -11,5 +11,16 @@
         <uie:IntegerField label="Height" value="42" name="recreate-height-int-field" style="flex-grow: 1; flex-shrink: 1; margin-right: 0; margin-left: 0;" />
         <ui:Button text="Recreate Map" display-tooltip-when-elided="true" name="recreate-cellar-map-button" style="flex-shrink: 1; flex-grow: 1; margin-left: 0; margin-right: 0;" />
     </ui:Foldout>
+    <ui:Foldout text="Resize" name="resize-block" value="true">
+        <ui:VisualElement name="resize-width-block" style="flex-direction: row;">
+            <uie:IntegerField label="Width offset" value="1" name="resize-width-int-field" class="cm-resize-side-int-field" style="flex-grow: 1; flex-shrink: 1;" />
+            <uie:EnumField value="Center" name="resize-width-rule-enum-field" class="cm-resize-rule-enum-field" />
+        </ui:VisualElement>
+        <ui:VisualElement name="resize-height-block" style="flex-direction: row; flex-grow: 0; flex-shrink: 1;">
+            <uie:IntegerField label="Height offset" value="1" name="resize-height-int-field" class="cm-resize-side-int-field" style="flex-grow: 1; flex-shrink: 1;" />
+            <uie:EnumField value="Center" name="resize-height-rule-enum-field" class="cm-resize-rule-enum-field" />
+        </ui:VisualElement>
+        <ui:Button text="Resize Map" display-tooltip-when-elided="true" name="resize-cellar-map-button" style="flex-shrink: 1; flex-grow: 1; margin-left: 0; margin-right: 0;" />
+    </ui:Foldout>
     <IUP.Toolkits.CellarMaps.UI.CellarMap name="cellar-map" />
 </ui:UXML>

@@ -10,12 +10,12 @@ namespace IUP.Toolkits.CellarMaps
     {
         public CellarMapLayer(int width, int height)
         {
-            Layer = new Matrix<CellType>(width, height);
+            Matrix = new Matrix<CellType>(width, height);
         }
 
-        public int Width => Layer.Width;
-        public int Height => Layer.Height;
-        public Matrix<CellType> Layer { get; private set; }
+        public int Width => Matrix.Width;
+        public int Height => Matrix.Height;
+        public Matrix<CellType> Matrix { get; private set; }
 
         /// <summary>
         /// Событие, уведомляющее об изменениях клеток на слое. Первый аргумент - сам слой, второй - 
@@ -28,12 +28,12 @@ namespace IUP.Toolkits.CellarMaps
 
         public CellType this[Vector2Int coordinate]
         {
-            get => Layer[coordinate];
+            get => Matrix[coordinate];
             set => SetCellByCoordinate(value, coordinate.x, coordinate.y);
         }
         public CellType this[int x, int y]
         {
-            get => Layer[x, y];
+            get => Matrix[x, y];
             set => SetCellByCoordinate(value, x, y);
         }
 
@@ -53,12 +53,12 @@ namespace IUP.Toolkits.CellarMaps
             {
                 throw new ArgumentException("Высота слоя должна быть больше или равна 1.");
             }
-            Layer.Recreate(width, height);
+            Matrix.Recreate(width, height);
         }
 
         public void Fill(CellType type)
         {
-            Layer.InitAllElements((int x, int y) => type);
+            Matrix.InitAllElements((int x, int y) => type);
             CellsChanged?.Invoke();
         }
 
@@ -68,9 +68,9 @@ namespace IUP.Toolkits.CellarMaps
             {
                 for (int x = 0; x < Width; x += 1)
                 {
-                    if (Layer[x, y] == replace)
+                    if (Matrix[x, y] == replace)
                     {
-                        Layer[x, y] = other;
+                        Matrix[x, y] = other;
                     }
                 }
             }
@@ -89,26 +89,26 @@ namespace IUP.Toolkits.CellarMaps
 
         private void SetCellByCoordinate(CellType type, int x, int y)
         {
-            Layer[x, y] = type;
+            Matrix[x, y] = type;
             CellsChanged?.Invoke();
         }
 
         public void OnBeforeSerialize()
         {
             _serializableWidth = Width;
-            _serializableLayer = Layer.ToArray();
+            _serializableLayer = Matrix.ToArray();
         }
 
         public void OnAfterDeserialize()
         {
             int layerHeight = _serializableLayer.Length / _serializableWidth;
-            Layer = new Matrix<CellType>(_serializableWidth, layerHeight);
+            Matrix = new Matrix<CellType>(_serializableWidth, layerHeight);
             for (int y = 0; y < layerHeight; y += 1)
             {
                 for (int x = 0; x < _serializableWidth; x += 1)
                 {
                     int i = (y * _serializableWidth) + x;
-                    Layer[x, y] = _serializableLayer[i];
+                    Matrix[x, y] = _serializableLayer[i];
                 }
             }
         }

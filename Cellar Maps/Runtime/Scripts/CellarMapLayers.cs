@@ -1,3 +1,4 @@
+using IUP.Toolkits.Matrices;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -128,6 +129,20 @@ namespace IUP.Toolkits.CellarMaps
             }
             _layersHeight = height;
             _layersWidth = width;
+        }
+
+        public void ResizeAllLayers(
+            int widthOffset,
+            int heightOffset,
+            WidthResizeRule widthResizeRule,
+            HeightResizeRule heightResizeRule)
+        {
+            foreach (CellarMapLayer layer in _layers)
+            {
+                layer.Matrix.Resize(widthOffset, heightOffset, widthResizeRule, heightResizeRule);
+            }
+            _layersWidth = _layers[0].Width;
+            _layersHeight = _layers[0].Height;
         }
 
         private void HandleCellsChangingOnLayer()

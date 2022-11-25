@@ -2,6 +2,7 @@ using IUP.Toolkits.CellarMaps.UI;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using IUP.Toolkits.Matrices;
 
 namespace IUP.Toolkits.CellarMaps.EditorScripts
 {
@@ -15,6 +16,13 @@ namespace IUP.Toolkits.CellarMaps.EditorScripts
         private IntegerField _uiRecreateWidthField;
         private IntegerField _uiRecreateHeightField;
         private Button _uiRecreateMapButton;
+
+        private IntegerField _uiResizeWidthOffsetField;
+        private IntegerField _uiResizeHeightOffsetField;
+        private EnumField _uiResizeWidthRuleField;
+        private EnumField _uiResizeHeightRuleField;
+        private Button _uiResizeMapButton;
+
         private UI.CellarMap _uiCellarMap;
         private PaletteList _uiPalette;
         private LayersList _uiLayers;
@@ -48,9 +56,11 @@ namespace IUP.Toolkits.CellarMaps.EditorScripts
             _palettePresenter.OnEnable();
             _cellarMapPresenter.OnEnable();
             _uiRecreateMapButton.clicked += RecreateMap;
+            _uiResizeMapButton.clicked += ResizeMap;
             InitSelectedCellTypeIndicator();
             InitActiveLayerIndicator();
             InitRecreateMapSizeFields();
+            InitResizeMapBlockFields();
             EditorUtility.SetDirty(_cellarMapAsset);
             return root;
         }
@@ -70,9 +80,16 @@ namespace IUP.Toolkits.CellarMaps.EditorScripts
         {
             _uiRecreateWidthField = root.Q<IntegerField>("recreate-width-int-field");
             _uiRecreateHeightField = root.Q<IntegerField>("recreate-height-int-field");
+            _uiRecreateMapButton = root.Q<Button>("recreate-cellar-map-button");
+
+            _uiResizeWidthOffsetField = root.Q<IntegerField>("resize-width-int-field");
+            _uiResizeHeightOffsetField = root.Q<IntegerField>("resize-height-int-field");
+            _uiResizeWidthRuleField = root.Q<EnumField>("resize-width-rule-enum-field");
+            _uiResizeHeightRuleField = root.Q<EnumField>("resize-height-rule-enum-field");
+            _uiResizeMapButton = root.Q<Button>("resize-cellar-map-button");
+
             _uiCellarMap = root.Q<UI.CellarMap>("cellar-map");
             _uiPalette = root.Q<UI.PaletteList>("palette");
-            _uiRecreateMapButton = root.Q<Button>("recreate-cellar-map-button");
             _uiSelectedCellTypeIndicator = root.Q<SelectedCellTypeIndicator>("selected-cell-type-indicator");
             _uiActiveLayerIndicator = root.Q<ActiveLayerIndicator>("active-layer-indicator");
             _uiLayers = root.Q<LayersList>("layers");
@@ -112,6 +129,22 @@ namespace IUP.Toolkits.CellarMaps.EditorScripts
         {
             _uiRecreateWidthField.value = _cellarMapAsset.Map.Width;
             _uiRecreateHeightField.value = _cellarMapAsset.Map.Height;
+        }
+
+        private void InitResizeMapBlockFields()
+        {
+            _uiResizeWidthRuleField.Init(WidthResizeRule.Right);
+            _uiResizeHeightRuleField.Init(HeightResizeRule.Down);
+        }
+
+        private void ResizeMap()
+        {
+            EditorUtility.SetDirty(_cellarMapAsset);
+            _cellarMapAsset.Map.Resize(
+                _uiResizeWidthOffsetField.value,
+                _uiResizeHeightOffsetField.value,
+                (WidthResizeRule)_uiResizeWidthRuleField.value,
+                (HeightResizeRule)_uiResizeHeightRuleField.value);
         }
 
         private void RecreateMap()
