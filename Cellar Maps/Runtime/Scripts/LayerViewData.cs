@@ -10,6 +10,7 @@ namespace IUP.Toolkits.CellarMaps
         {
             _layer = layer;
             _layerIndex = index;
+            _color = new(30f / 255f, 30f / 255f, 30f / 255f, 1);
             if (_layerIndex == 0)
             {
                 _layerName = $"default-layer-{_layerIndex}";
@@ -39,11 +40,21 @@ namespace IUP.Toolkits.CellarMaps
                 ViewDataUpdated?.Invoke();
             }
         }
+        public Color Color
+        {
+            get => _color;
+            set
+            {
+                _color = value;
+                ViewDataUpdated?.Invoke();
+            }
+        }
 
         public event Action ViewDataUpdated;
 
         [SerializeField] private int _layerIndex;
         [SerializeField] private string _layerName;
+        [SerializeField] private Color _color;
         [SerializeReference] private ICellarMapLayer _layer;
     }
 }

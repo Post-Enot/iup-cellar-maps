@@ -65,6 +65,7 @@ namespace IUP.Toolkits.CellarMaps.UI
             if (_activeLayerViewData != null)
             {
                 IndicatorLabel.text = _activeLayerViewData.LayerName;
+                IndicatorLabel.style.backgroundColor = _activeLayerViewData.Color;
             }
         }
 
