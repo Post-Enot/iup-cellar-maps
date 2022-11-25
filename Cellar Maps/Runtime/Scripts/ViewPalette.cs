@@ -55,6 +55,10 @@ namespace IUP.Toolkits.CellarMaps
         public void Remove(int typeIndex)
         {
             CellTypeViewData viewData = _viewDataOrder[typeIndex];
+            if (SelectedCellTypeViewData == viewData)
+            {
+                UpdateSelectedItem(null);
+            }
             _viewDataOrder.RemoveAt(typeIndex);
             _palette.Remove(viewData.Type);
         }

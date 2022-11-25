@@ -57,6 +57,10 @@ namespace IUP.Toolkits.CellarMaps
                 _viewData.RemoveAt(layerIndex);
                 ResetIndexes();
             }
+            if (_activeLayerViewData.LayerIndex == layerIndex)
+            {
+                UpdateSelectedItem(_viewData[0]);
+            }
         }
 
         public void MoveItemFromTo(int from, int to)
