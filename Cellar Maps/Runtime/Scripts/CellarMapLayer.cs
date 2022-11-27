@@ -57,22 +57,20 @@ namespace IUP.Toolkits.CellarMaps
 
         public void Fill(CellType type)
         {
-            Matrix.InitAllElements((int x, int y) => type);
+            Matrix.InitAllElements(() => type);
             CellsChanged?.Invoke();
         }
 
         public void ReplaceWithOther(CellType replace, CellType other)
         {
-            for (int y = 0; y < Height; y += 1)
-            {
-                for (int x = 0; x < Width; x += 1)
+            Matrix.ForEachElements(
+                delegate (ref CellType element)
                 {
-                    if (Matrix[x, y] == replace)
+                    if (element == replace)
                     {
-                        Matrix[x, y] = other;
+                        element = other;
                     }
-                }
-            }
+                });
             CellsChanged?.Invoke();
         }
 
@@ -102,14 +100,7 @@ namespace IUP.Toolkits.CellarMaps
         {
             int layerHeight = _serializableLayer.Length / _serializableWidth;
             Matrix = new Matrix<CellType>(_serializableWidth, layerHeight);
-            for (int y = 0; y < layerHeight; y += 1)
-            {
-                for (int x = 0; x < _serializableWidth; x += 1)
-                {
-                    int i = (y * _serializableWidth) + x;
-                    Matrix[x, y] = _serializableLayer[i];
-                }
-            }
+            Matrix.InitAllElements((int x, int y) => _serializableLayer[y * _serializableWidth + x]);
         }
     }
 }

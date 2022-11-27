@@ -68,13 +68,7 @@ namespace IUP.Toolkits.CellarMaps
         {
             foreach (CellarMapLayer layer in _layers)
             {
-                for (int y = 0; y < layer.Height; y += 1)
-                {
-                    for (int x = 0; x < layer.Width; x += 1)
-                    {
-                        layer[x, y] = type;
-                    }
-                }
+                layer.Matrix.InitAllElements(() => type);
             }
             CellsChanged?.Invoke();
         }
@@ -88,16 +82,14 @@ namespace IUP.Toolkits.CellarMaps
         {
             foreach (CellarMapLayer layer in _layers)
             {
-                for (int y = 0; y < layer.Height; y += 1)
-                {
-                    for (int x = 0; x < layer.Width; x += 1)
+                layer.Matrix.ForEachElements(
+                    delegate (ref CellType element)
                     {
-                        if (layer[x, y] == replace)
+                        if (element == replace)
                         {
-                            layer[x, y] = other;
+                            element = other;
                         }
-                    }
-                }
+                    });
             }
             CellsChanged?.Invoke();
         }
