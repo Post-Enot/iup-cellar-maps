@@ -52,16 +52,7 @@ namespace IUP.Toolkits.CellarMaps.UI
             {
                 for (int x = 0; x < Model.Width; x += 1)
                 {
-                    (CellType topCellType, bool isOnActiveLayer) =
-                        Model.TopCells[ViewLayers.ActiveLayerViewData.LayerIndex, x, y];
-                    if (topCellType != null)
-                    {
-                        View[x, y].SetViewData(ViewPalette.ViewData[topCellType], isOnActiveLayer);
-                    }
-                    else
-                    {
-                        View[x, y].SetViewData(null, false);
-                    }
+                    UpdateMapViewByCoordinate(x, y);
                 }
             }
         }
@@ -106,15 +97,19 @@ namespace IUP.Toolkits.CellarMaps.UI
 
         private void UpdateMapViewByCoordinate(int x, int y)
         {
-            (CellType topCellType, bool isOnActiveLayer) 
-            = Model.TopCells[ViewLayers.ActiveLayerViewData.LayerIndex, x, y];
+            int topCellLayer = Model.GetTopCellType(
+                out CellType topCellType,
+                ViewLayers.ActiveLayerViewData.LayerIndex,
+                x,
+                y);
+            bool isOnActiveLayer = topCellLayer == ViewLayers.ActiveLayerViewData.LayerIndex;
             if (topCellType != null)
             {
                 View[x, y].SetViewData(ViewPalette.ViewData[topCellType], isOnActiveLayer);
             }
             else
             {
-                View[x, y].SetViewData(null, false);
+                View[x, y].SetViewData(null, isOnActiveLayer);
             }
         }
     }

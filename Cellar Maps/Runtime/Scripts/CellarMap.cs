@@ -20,7 +20,6 @@ namespace IUP.Toolkits.CellarMaps
         {
             _layers = new CellarMapLayers(width, height);
             _layers.CellsChanged += HandleCellsChangingOnLayers;
-            TopCells = new TopCellIndexer(_layers);
             _palette = palette;
             Palette.CellTypeRemovedFromPalette += _layers.ClearAllLayersFrom;
         }
@@ -38,7 +37,6 @@ namespace IUP.Toolkits.CellarMaps
         /// </summary>
         public Palette Palette => _palette;
         public ICellarMapLayers Layers => _layers;
-        public TopCellIndexer TopCells { get; private set; }
 
         /// <summary>
         /// Вызывается при изменении значения клеток.
@@ -82,6 +80,51 @@ namespace IUP.Toolkits.CellarMaps
             Resized?.Invoke();
         }
 
+        /// <summary>
+        /// Находит первую верхнюю клетку между первым и слоем переданного индекса по переданным координатам.
+        /// </summary>
+        /// <param name="cellType">Выходной параметр, в который помещается значение верхней клетки.</param>
+        /// <param name="topLayerIndex">Индекс слоя, между которым и первым слоем будет происходить поиск.</param>
+        /// <param name="coordinate">Координата.</param>
+        /// <returns>Возвращает индекс найденной клетки; если все клетки равны null, возвращает индекс 
+        /// первого слоя (0).</returns>
+        public int GetTopCellType(out CellType cellType, int topLayerIndex, Vector2Int coordinate)
+        {
+            for (int layerIndex = topLayerIndex; layerIndex >= 0; layerIndex -= 1)
+            {
+                if (_layers[layerIndex][coordinate] != null)
+                {
+                    cellType = _layers[layerIndex][coordinate];
+                    return layerIndex;
+                }
+            }
+            cellType = null;
+            return 0;
+        }
+
+        /// <summary>
+        /// Находит первую верхнюю клетку между первым и слоем переданного индекса по переданным координатам.
+        /// </summary>
+        /// <param name="cellType">Выходной параметр, в который помещается значение верхней клетки.</param>
+        /// <param name="topLayerIndex">Индекс слоя, между которым и первым слоем будет происходить поиск.</param>
+        /// <param name="x">X-компонента координаты.</param>
+        /// <param name="y">Y-компонента координаты.</param>
+        /// <returns>Возвращает индекс найденной клетки; если все клетки равны null, возвращает индекс 
+        /// первого слоя (0).</returns>
+        public int GetTopCellType(out CellType cellType, int topLayerIndex, int x, int y)
+        {
+            for (int layerIndex = topLayerIndex; layerIndex >= 0; layerIndex -= 1)
+            {
+                if (_layers[layerIndex][x, y] != null)
+                {
+                    cellType = _layers[layerIndex][x, y];
+                    return layerIndex;
+                }
+            }
+            cellType = null;
+            return 0;
+        }
+
         private void HandleCellsChangingOnLayers()
         {
             CellsChanged?.Invoke();
@@ -92,7 +135,6 @@ namespace IUP.Toolkits.CellarMaps
         public void OnAfterDeserialize()
         {
             Palette.CellTypeRemovedFromPalette += _layers.ClearAllLayersFrom;
-            TopCells = new TopCellIndexer(_layers);
             _layers.CellsChanged += HandleCellsChangingOnLayers;
         }
     }
