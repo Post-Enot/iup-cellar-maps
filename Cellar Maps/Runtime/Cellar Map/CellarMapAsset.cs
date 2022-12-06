@@ -1,6 +1,7 @@
 ﻿using IUP.Toolkits.CellarMaps.Serialization;
 using System;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 using DTO = IUP.Toolkits.CellarMaps.Serialization.DTO;
 
@@ -18,7 +19,7 @@ namespace IUP.Toolkits.CellarMaps
         /// <summary>
         /// Путь к файлу клеточной карты, связанный с данным ассетом.
         /// </summary>
-        public string FilePath => _filePath;
+        public string FilePath => AssetDatabase.GetAssetPath(this);
         /// <summary>
         /// True, если ассет связан с файлом клеточной карты.
         /// </summary>
@@ -28,7 +29,6 @@ namespace IUP.Toolkits.CellarMaps
         /// </summary>
         public bool IsAssetLoaded { get; private set; }
 
-        [SerializeField] private string _filePath;
         [SerializeField] private bool _isAssetBound;
         private DTO.CellarMapFile _cellarMapFileDTO;
 
@@ -53,7 +53,7 @@ namespace IUP.Toolkits.CellarMaps
             }
             _cellarMapFileDTO.cellar_map = CellarMap.ToDTO();
             string cellarMapJson = CellarMapSerializer.CellarMapFileDTO_ToJson(_cellarMapFileDTO);
-            File.WriteAllText(_filePath, cellarMapJson);
+            File.WriteAllText(FilePath, cellarMapJson);
         }
 
         private DTO.CellarMapFile LoadCellarMapFileDTO()
@@ -63,8 +63,16 @@ namespace IUP.Toolkits.CellarMaps
                 throw new InvalidOperationException(
                     "Ассет не связан с файлом клеточной карты: скорее всего это вызвано тем, что он был создан с помощью метода ScriptableObject.CreateInstance. Для создания ассета используйте метод CellarMapAsset.CreateAsset.");
             }
-            string cellarMapJson = File.ReadAllText(_filePath);
+            string cellarMapJson = File.ReadAllText(FilePath);
             return CellarMapSerializer.JsonToCellarMapFileDTO(cellarMapJson);
+        }
+
+        /// <summary>
+        /// Связывает ассет с json-файлом, используемым для сериализации и десериализации ассета.
+        /// </summary>
+        private void BindWithJson_File()
+        {
+            _isAssetBound = true;
         }
 
         /// <summary>
@@ -74,18 +82,8 @@ namespace IUP.Toolkits.CellarMaps
         public static CellarMapAsset CreateAsset(string cellarMapFilePath)
         {
             var asset = CreateInstance<CellarMapAsset>();
-            asset.BindWithJson_File(cellarMapFilePath);
+            asset.BindWithJson_File();
             return asset;
-        }
-
-        /// <summary>
-        /// Связывает ассет с json-файлом, используемым для сериализации и десериализации ассета.
-        /// </summary>
-        /// <param name="cellarMapFilePath">путь до json-файла клеточной карты.</param>
-        private void BindWithJson_File(string cellarMapFilePath)
-        {
-            _filePath = cellarMapFilePath;
-            _isAssetBound = true;
         }
     }
 }

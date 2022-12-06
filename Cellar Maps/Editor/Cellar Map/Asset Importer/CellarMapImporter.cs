@@ -30,7 +30,6 @@ namespace IUP.Toolkits.CellarMaps.Editor
             }
 
             var asset = CellarMapAsset.CreateAsset(ctx.assetPath);
-
             ctx.AddObjectToAsset("<root>", asset);
             ctx.SetMainObject(asset);
 
