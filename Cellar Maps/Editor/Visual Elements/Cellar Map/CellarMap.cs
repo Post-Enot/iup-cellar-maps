@@ -25,7 +25,7 @@ namespace IUP.Toolkits.CellarMaps.Editor.UI
         public event Action<Vector2Int> Clicked;
 
         private readonly List<CellarMapRow> _rows = new();
-
+                                                                                  
         public ICell this[Vector2Int coordinate] => _rows[coordinate.y].Cells[coordinate.x];
         public ICell this[int x, int y] => _rows[y].Cells[x];
 
@@ -54,7 +54,7 @@ namespace IUP.Toolkits.CellarMaps.Editor.UI
 
         public void UpdateCellViewData(int x, int y, CellViewData viewData)
         {
-            _rows[x].Cells[y].UpdateView(viewData);
+            _rows[y].Cells[x].UpdateView(viewData);
         }
 
         public void UpdateCellViewData(Vector2Int coordinate, CellViewData viewData)
