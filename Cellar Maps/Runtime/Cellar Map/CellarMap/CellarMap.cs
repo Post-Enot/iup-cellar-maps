@@ -40,6 +40,11 @@ namespace IUP.Toolkits.CellarMaps
             _layers.ResizeAllLayers(width, height, widthResizeRule, heightResizeRule);
         }
 
+        public void Rotate(MatrixRotation matrixRotation)
+        {
+            _layers.RotateAllLayers(matrixRotation);
+        }
+
         public void AddCellTypeToPalette(string cellTypeName)
         {
             _palette.Add(cellTypeName);

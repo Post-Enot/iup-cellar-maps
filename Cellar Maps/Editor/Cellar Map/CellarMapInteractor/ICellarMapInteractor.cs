@@ -62,6 +62,12 @@ namespace IUP.Toolkits.CellarMaps.Editor
             HeightResizeRule heightResizeRule);
 
         /// <summary>
+        /// Поворачивает клеточную карту.
+        /// </summary>
+        /// <param name="matrixRotation">Тип вращения матриц слоёв.</param>
+        public void Rotate(MatrixRotation matrixRotation);
+
+        /// <summary>
         /// Возвращает первую не пустую или самую нижнюю клеткую при переборе сверху вниз.
         /// </summary>
         /// <param name="x">X-компонента координаты клетки.</param>

@@ -115,6 +115,19 @@ namespace IUP.Toolkits.CellarMaps
         }
 
         /// <summary>
+        /// Поворачивает все слои.
+        /// </summary>
+        /// <param name="matrixRotation">Тип вращения матриц слоёв.</param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public void RotateAllLayers(MatrixRotation matrixRotation)
+        {
+            foreach (Layer layer in _layers)
+            {
+                layer.Rotate(matrixRotation);
+            }
+        }
+
+        /// <summary>
         /// Изменяет размер всех слоёв в соответствии с переданными правилами.
         /// </summary>
         /// <param name="widthOffset">Величина изменения ширины слоёв. После изменения размера ширина 

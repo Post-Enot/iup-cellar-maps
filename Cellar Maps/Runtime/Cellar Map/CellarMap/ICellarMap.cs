@@ -54,6 +54,12 @@ namespace IUP.Toolkits.CellarMaps
             HeightResizeRule heightResizeRule);
 
         /// <summary>
+        /// Поворачивает клеточную карту.
+        /// </summary>
+        /// <param name="matrixRotation">Тип вращения матриц слоёв.</param>
+        public void Rotate(MatrixRotation matrixRotation);
+
+        /// <summary>
         /// Создаёт новый тип клетки и добавляет его в палитру.
         /// </summary>
         /// <param name="cellTypeName">Название типа клетки. Должно быть уникальным, иначе вызовет 

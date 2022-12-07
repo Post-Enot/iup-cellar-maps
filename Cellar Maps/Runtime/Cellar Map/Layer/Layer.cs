@@ -107,6 +107,16 @@ namespace IUP.Toolkits.CellarMaps
         }
 
         /// <summary>
+        /// Поворачивает слой.
+        /// </summary>
+        /// <param name="matrixRotation">Тип вращения матрицы слоя.</param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public void Rotate(MatrixRotation matrixRotation)
+        {
+            _matrix.Rotate(matrixRotation);
+        }
+
+        /// <summary>
         /// Присваивает всем клеткам переданный тип клетки.
         /// </summary>
         /// <param name="type">Тип клетки-заполнитель.</param>

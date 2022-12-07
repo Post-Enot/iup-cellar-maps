@@ -76,7 +76,7 @@ namespace IUP.Toolkits.CellarMaps.Editor.UI
             _cells.Clear();
             for (int x = 0; x < width; x += 1)
             {
-                var cell = new Cell(Index, x);
+                var cell = new Cell(x, Index);
                 _cells.Add(cell);
                 Add(cell);
             }

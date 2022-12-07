@@ -8,6 +8,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
         public CellarMapTools(
             IRecreateCommand recreateCommand,
             IResizeCommand resizeCommand,
+            IRotateCommand rotateCommand,
             CellarMapPresenter cellarMapPresenter,
             PalettePresenter palettePresenter,
             LayerListPresenter layerListPresenter,
@@ -17,6 +18,8 @@ namespace IUP.Toolkits.CellarMaps.Editor
             _recreateCommand.RecreateCommandInvoked += RecreateMap;
             _resizeCommand = resizeCommand;
             _resizeCommand.ResizeCommandInvoked += ResizeMap;
+            _rotateCommand = rotateCommand;
+            _rotateCommand.RotateCommandInvoked += RotateMap;
             _cellarMapPresenter = cellarMapPresenter;
             _cellarMapInteractor = cellarMapInteractor;
             _palettePresenter = palettePresenter;
@@ -31,6 +34,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
 
         private readonly IRecreateCommand _recreateCommand;
         private readonly IResizeCommand _resizeCommand;
+        private readonly IRotateCommand _rotateCommand;
         private readonly CellarMapPresenter _cellarMapPresenter;
         private readonly ICellarMapInteractor _cellarMapInteractor;
         private readonly PalettePresenter _palettePresenter;
@@ -50,6 +54,12 @@ namespace IUP.Toolkits.CellarMaps.Editor
             HeightResizeRule heightResizeRule)
         {
             _cellarMapInteractor.Resize(width, height, widthResizeRule, heightResizeRule);
+            _cellarMapPresenter.UpdateCellarMapView();
+        }
+
+        private void RotateMap(MatrixRotation matrixRotation)
+        {
+            _cellarMapInteractor.Rotate(matrixRotation);
             _cellarMapPresenter.UpdateCellarMapView();
         }
     }

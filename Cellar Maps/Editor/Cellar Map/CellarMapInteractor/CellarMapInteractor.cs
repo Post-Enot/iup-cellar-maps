@@ -54,6 +54,11 @@ namespace IUP.Toolkits.CellarMaps.Editor
             _markUnsavedChanges();
         }
 
+        public void Rotate(MatrixRotation matrixRotation)
+        {
+            _cellarMap.Rotate(matrixRotation);
+        }
+
         public (ICell cell, int cellLayerIndex) GetTopCell(int x, int y, int startLayerIndex = 0)
         {
             ICell cell = this[startLayerIndex][x, y];
