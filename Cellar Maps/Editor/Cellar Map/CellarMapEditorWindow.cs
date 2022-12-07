@@ -189,10 +189,13 @@ namespace IUP.Toolkits.CellarMaps.Editor
 
         public void OnBeforeSerialize()
         {
-            (DTO.CellarMapViewData cellarMapViewDataDTO, DTO.CellarMap cellarMapDTO)
-                = _cellarMapInteractor.ToDTO();
-            _cellarMapFileDTO.cellar_map_view_data = cellarMapViewDataDTO;
-            _cellarMapFileDTO.cellar_map = cellarMapDTO;
+            if (_cellarMapInteractor != null)
+            {
+                (DTO.CellarMapViewData cellarMapViewDataDTO, DTO.CellarMap cellarMapDTO)
+                    = _cellarMapInteractor.ToDTO();
+                _cellarMapFileDTO.cellar_map_view_data = cellarMapViewDataDTO;
+                _cellarMapFileDTO.cellar_map = cellarMapDTO;
+            }
         }
 
         public void OnAfterDeserialize() { }
