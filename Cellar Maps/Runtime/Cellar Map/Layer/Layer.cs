@@ -117,6 +117,15 @@ namespace IUP.Toolkits.CellarMaps
         }
 
         /// <summary>
+        /// Отражает слой.
+        /// </summary>
+        /// <param name="matrixMirror">Тип отражения матрицы слоя.</param>
+        public void Mirror(MatrixMirror matrixMirror)
+        {
+            _matrix.Mirror(matrixMirror);
+        }
+
+        /// <summary>
         /// Присваивает всем клеткам переданный тип клетки.
         /// </summary>
         /// <param name="type">Тип клетки-заполнитель.</param>

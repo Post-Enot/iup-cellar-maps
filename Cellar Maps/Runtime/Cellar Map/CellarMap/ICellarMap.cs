@@ -56,8 +56,14 @@ namespace IUP.Toolkits.CellarMaps
         /// <summary>
         /// Поворачивает клеточную карту.
         /// </summary>
-        /// <param name="matrixRotation">Тип вращения матриц слоёв.</param>
+        /// <param name="matrixRotation">Тип вращения матриц слоёв клеточной карты.</param>
         public void Rotate(MatrixRotation matrixRotation);
+
+        /// <summary>
+        /// Отражает клеточную карту.
+        /// </summary>
+        /// <param name="matrixMirror">Тип отражения матриц слоёв клеточной карты.</param>
+        public void Mirror(MatrixMirror matrixMirror);
 
         /// <summary>
         /// Создаёт новый тип клетки и добавляет его в палитру.

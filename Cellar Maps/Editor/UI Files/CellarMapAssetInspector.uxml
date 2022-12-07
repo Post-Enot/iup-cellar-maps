@@ -10,8 +10,11 @@
                 <ui:Foldout text="Resize" name="resize-foldout">
                     <IUP.Toolkits.CellarMaps.Editor.UI.ResizeBlock name="resize-block" />
                 </ui:Foldout>
-                <ui:Foldout text="Foldout" name="rotate-foldout">
+                <ui:Foldout text="Rotate" name="rotate-foldout">
                     <IUP.Toolkits.CellarMaps.Editor.UI.RotateBlock name="rotate-block" />
+                </ui:Foldout>
+                <ui:Foldout text="Mirror" name="mirror-foldout">
+                    <IUP.Toolkits.CellarMaps.Editor.UI.MirrorBlock name="mirror-block" />
                 </ui:Foldout>
             </ui:VisualElement>
             <ui:TwoPaneSplitView fixed-pane-initial-dimension="250" fixed-pane-index="1" style="height: 100%; flex-direction: row;">

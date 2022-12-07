@@ -29,6 +29,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
         private UI.IRecreateCommand _uiRecreateCommand;
         private UI.IResizeCommand _uiResizeCommand;
         private UI.IRotateCommand _uiRotateCommand;
+        private UI.IMirrorCommand _uiMirrorCommand;
         private UI.IActiveCellTypeIndicator _uiActiveCellTypeIndicator;
         private UI.IActiveLayerIndicator _uiActiveLayerIndicator;
         private ShortcutManager _shortcutManager;
@@ -55,6 +56,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
             _uiRecreateCommand = rootVisualElement.Q<RecreateBlock>("recreate-block");
             _uiResizeCommand = rootVisualElement.Q<ResizeBlock>("resize-block");
             _uiRotateCommand = rootVisualElement.Q<RotateBlock>("rotate-block");
+            _uiMirrorCommand = rootVisualElement.Q<MirrorBlock>("mirror-block");
             _uiActiveCellTypeIndicator = rootVisualElement.Q<ActiveCellTypeIndicator>(
                 "active-cell-type-indicator");
             _uiActiveLayerIndicator = rootVisualElement.Q<ActiveLayerIndicator>("active-layer-indicator");
@@ -86,6 +88,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
                 _uiRecreateCommand,
                 _uiResizeCommand,
                 _uiRotateCommand,
+                _uiMirrorCommand,
                 _cellarMapPresenter,
                 _palettePresenter,
                 _layerListPresenter,

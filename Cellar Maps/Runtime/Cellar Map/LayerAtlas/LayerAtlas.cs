@@ -148,6 +148,18 @@ namespace IUP.Toolkits.CellarMaps
             }
         }
 
+        /// <summary>
+        /// Отражает все слои.
+        /// </summary>
+        /// <param name="matrixMirror">Тип отражения матриц слоёв.</param>
+        public void MirrorAllLayers(MatrixMirror matrixMirror)
+        {
+            foreach (Layer layer in _layers)
+            {
+                layer.Mirror(matrixMirror);
+            }
+        }
+
         public IEnumerator<ILayer> GetEnumerator()
         {
             return _layers.GetEnumerator();

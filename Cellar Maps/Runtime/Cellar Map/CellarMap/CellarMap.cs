@@ -45,6 +45,11 @@ namespace IUP.Toolkits.CellarMaps
             _layers.RotateAllLayers(matrixRotation);
         }
 
+        public void Mirror(MatrixMirror matrixMirror)
+        {
+            _layers.MirrorAllLayers(matrixMirror);
+        }
+
         public void AddCellTypeToPalette(string cellTypeName)
         {
             _palette.Add(cellTypeName);

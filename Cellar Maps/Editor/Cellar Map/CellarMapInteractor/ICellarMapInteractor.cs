@@ -68,6 +68,12 @@ namespace IUP.Toolkits.CellarMaps.Editor
         public void Rotate(MatrixRotation matrixRotation);
 
         /// <summary>
+        /// Отражает матрицу.
+        /// </summary>
+        /// <param name="matrixMirror">Тип отражения матрицы.</param>
+        public void Mirror(MatrixMirror matrixMirror);
+
+        /// <summary>
         /// Возвращает первую не пустую или самую нижнюю клеткую при переборе сверху вниз.
         /// </summary>
         /// <param name="x">X-компонента координаты клетки.</param>
