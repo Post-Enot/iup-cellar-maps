@@ -1,8 +1,8 @@
-using IUP.Toolkits.CellarMaps.Editor.UI;
-using IUP.Toolkits.CellarMaps.Serialization;
 using System;
 using System.IO;
 using System.Linq;
+using IUP.Toolkits.CellarMaps.Editor.UI;
+using IUP.Toolkits.CellarMaps.Serialization;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -108,9 +108,15 @@ namespace IUP.Toolkits.CellarMaps.Editor
                 cellar_map = cellarMapDTO
             };
             string cellarMapJson = CellarMapSerializer.CellarMapFileDTO_ToJson(cellarMapFile);
-            File.WriteAllText(_asset.FilePath, cellarMapJson);
+            File.WriteAllText(AssetDatabase.GetAssetPath(_asset), cellarMapJson);
             hasUnsavedChanges = false;
             Repaint();
+        }
+
+        [MenuItem("IUP/Cellar Map Editor")]
+        public static void OpenWindow()
+        {
+            _ = GetWindow<CellarMapEditorWindow>();
         }
 
         [OnOpenAsset]
@@ -180,7 +186,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
         {
             if (_cellarMapFileDTO == null)
             {
-                string cellarMapJson = File.ReadAllText(_asset.FilePath);
+                string cellarMapJson = File.ReadAllText(AssetDatabase.GetAssetPath(_asset));
                 _cellarMapFileDTO = CellarMapSerializer.JsonToCellarMapFileDTO(cellarMapJson);
             }
             _cellarMapInteractor = CellarMapInteractor.DTO_ToCellarMapInteractor(

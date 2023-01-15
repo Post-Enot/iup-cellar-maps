@@ -48,7 +48,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
 
         private void LoadCellarMapInteractor()
         {
-            string cellarMapJson = File.ReadAllText(_asset.FilePath);
+            string cellarMapJson = File.ReadAllText(AssetDatabase.GetAssetPath(_asset));
             DTO.CellarMapFile cellarMapFileDTO = CellarMapSerializer.JsonToCellarMapFileDTO(cellarMapJson);
             _cellarMapInteractor = CellarMapInteractor.DTO_ToCellarMapInteractor(
                 cellarMapFileDTO);

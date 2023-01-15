@@ -30,14 +30,14 @@ namespace IUP.Toolkits.CellarMaps.Editor
         /// Визуальные данные слоёв клеточной карты.
         /// </summary>
         public ILayersViewData LayersViewData { get; }
-        public IPalette Palette { get; }
+        public IReadOnlyPalette Palette { get; }
 
         /// <summary>
         /// Индексатор для доступа к слоям клеточной карты.
         /// </summary>
         /// <param name="layerIndex">Индекс слоя клеточной карты.</param>
         /// <returns>Возвращает слой клеточной карты.</returns>
-        public ILayer this[int layerIndex] { get; }
+        public IReadOnlyLayer this[int layerIndex] { get; }
 
         public void SetMarkUnsavedChangesCallback(Action markUnsavedCallback);
 
@@ -81,7 +81,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
         /// <param name="startLayerIndex">Индекс слоя, с которого начинается перебор.</param>
         /// <returns>Возвращает кортеж из двух элементов: ссылки первую не пустую или самую 
         /// нижнюю клеткую при переборе сверху вниз (cell) и индекс слоя клетки (cellLayerIndex).</returns>
-        public (ICell cell, int cellLayerIndex) GetTopCell(int x, int y, int startLayerIndex = 0);
+        public (IReadOnlyCell cell, int cellLayerIndex) GetTopCell(int x, int y, int startLayerIndex = 0);
 
         /// <summary>
         /// Возвращает первую не пустую или самую нижнюю клеткую при переборе сверху вниз.
@@ -90,7 +90,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
         /// <param name="startLayerIndex">Индекс слоя, с которого начинается перебор.</param>
         /// <returns>Возвращает кортеж из двух элементов: ссылки первую не пустую или самую 
         /// нижнюю клеткую при переборе сверху вниз (cell) и индекс слоя клетки (cellLayerIndex).</returns>
-        public (ICell cell, int cellLayerIndex) GetTopCell(Vector2Int coordinate, int startLayerIndex = 0);
+        public (IReadOnlyCell cell, int cellLayerIndex) GetTopCell(Vector2Int coordinate, int startLayerIndex = 0);
 
         /// <summary>
         /// Добавляет новый тип клетки в палитру клеточной карты и создаёт визуальные данные для неё.
@@ -112,7 +112,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
         /// <param name="newCellTypeName">Новое название типа клетки.</param>
         /// <returns>Возвращает true, если название типа клетки было успешно изменено; 
         /// иначе false.</returns>
-        public bool RenameCellType(string cellTypeName, string newCellTypeName);
+        public void RenameCellType(string cellTypeName, string newCellTypeName);
 
         /// <summary>
         /// Изменяет цвет типа клетки клеточной карты.

@@ -1,7 +1,7 @@
-﻿using IUP.Toolkits.Matrices;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using IUP.Toolkits.Matrices;
 
 namespace IUP.Toolkits.CellarMaps
 {
@@ -26,19 +26,13 @@ namespace IUP.Toolkits.CellarMaps
         public int Width => _layers[0].Width;
         public int Height => _layers[0].Height;
         public int Count => _layers.Count;
-        public IReadOnlyDictionary<ILayer, int> LayerIndexByLayer => _layerIndexByLayer;
+        public IReadOnlyDictionary<IReadOnlyLayer, int> LayerIndexByLayer => _layerIndexByLayer;
 
         private readonly List<Layer> _layers = new();
-        private readonly Dictionary<ILayer, int> _layerIndexByLayer = new();
+        private readonly Dictionary<IReadOnlyLayer, int> _layerIndexByLayer = new();
 
-        public ILayer this[int layerIndex] => _layers[layerIndex];
+        public IReadOnlyLayer this[int layerIndex] => _layers[layerIndex];
 
-        /// <summary>
-        /// Создаёт слой на основе переданных аргументов и помещает его в конец списка слоёв.
-        /// </summary>
-        /// <param name="layerName">Название слоя: должно быть отличным от null, 
-        /// иначе вызывает ArgumentNullException.</param>
-        /// <returns>Возвращает созданный слой клеточной карты.</returns>
         public void Add(string layerName)
         {
             Layer layer = new(Width, Height, layerName);
@@ -46,10 +40,6 @@ namespace IUP.Toolkits.CellarMaps
             _layers.Add(layer);
         }
 
-        /// <summary>
-        /// Удаляет слой по индексу.
-        /// </summary>
-        /// <param name="layerIndex">Индекс удаляемого слоя.</param>
         public void Remove(int layerIndex)
         {
             if (_layers.Count == 1 && layerIndex == 0)
@@ -77,12 +67,6 @@ namespace IUP.Toolkits.CellarMaps
             ResetLayerIndexes(from, to + 1);
         }
 
-        /// <summary>
-        /// Метод для доступа к слою по индексу: заглушкой до добавления поддержки ковариантности возвращаемых 
-        /// типов в Unity.
-        /// </summary>
-        /// <param name="layerIndex">Индекс слоя.</param>
-        /// <returns>Возвращает слой клеточной карты.</returns>
         public Layer GetLayer(int layerIndex)
         {
             return _layers[layerIndex];
@@ -93,7 +77,7 @@ namespace IUP.Toolkits.CellarMaps
         /// уникальные данные.
         /// </summary>
         /// <param name="type">Тип клетки, от которого очищаются слои.</param>
-        public void ClearAllLayersFrom(ICellType type)
+        public void ClearAllLayersFrom(IReadOnlyCellType type)
         {
             foreach (Layer layer in _layers)
             {
@@ -160,7 +144,7 @@ namespace IUP.Toolkits.CellarMaps
             }
         }
 
-        public IEnumerator<ILayer> GetEnumerator()
+        public IEnumerator<IReadOnlyLayer> GetEnumerator()
         {
             return _layers.GetEnumerator();
         }

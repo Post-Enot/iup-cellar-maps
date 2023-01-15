@@ -60,7 +60,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
         /// <param name="y"></param>
         public void UpdateCellView(int x, int y)
         {
-            (ICell cell, int cellLayerIndex) = _model.GetTopCell(x, y, ActiveLayerIndex);
+            (IReadOnlyCell cell, int cellLayerIndex) = _model.GetTopCell(x, y, ActiveLayerIndex);
             CellViewData viewData = CreateCellViewData(cell, x, y, cellLayerIndex);
             if (_cellarMapViewData[x, y] != viewData)
             {
@@ -99,7 +99,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
         }
 
         private CellViewData CreateCellViewData(
-            ICell cell,
+            IReadOnlyCell cell,
             int cellX_Position,
             int cellY_Position,
             int cellLayerIndex)
@@ -112,11 +112,11 @@ namespace IUP.Toolkits.CellarMaps.Editor
             };
         }
 
-        private Color CreateCellColor(ICell cell, int cellLayerIndex)
+        private Color CreateCellColor(IReadOnlyCell cell, int cellLayerIndex)
         {
-            if (cell.HasCellType)
+            if (cell.HasType)
             {
-                ICellTypeViewData cellTypeViewData = _model.CellTypesViewData[cell.CellType.TypeName];
+                ICellTypeViewData cellTypeViewData = _model.CellTypesViewData[cell.Type.Name];
                 Color color = cellTypeViewData.Color;
                 if (cellLayerIndex != ActiveLayerIndex)
                 {
@@ -127,9 +127,9 @@ namespace IUP.Toolkits.CellarMaps.Editor
             return _emptyCellColor;
         }
 
-        private string CreateTitle(ICell cell)
+        private string CreateTitle(IReadOnlyCell cell)
         {
-            if (cell.HasUniqueData)
+            if (cell.HasMetadata)
             {
                 return _uniqueDataTitleIndicator;
             }
@@ -151,15 +151,15 @@ namespace IUP.Toolkits.CellarMaps.Editor
         }
 
         private string CreateTooltip(
-            ICell cell,
+            IReadOnlyCell cell,
             int cellX_position,
             int cellY_position,
             int cellLayerIndex)
         {
             var builder = new StringBuilder();
-            string signature = cell.CellType?.TypeName ?? _emptyCellSignature;
+            string signature = cell.Type?.Name ?? _emptyCellSignature;
             builder.AppendLine($"({cellX_position}, {cellY_position})");
-            if (cell.HasCellType)
+            if (cell.HasType)
             {
                 builder.AppendLine($"Type: {signature}");
             }
@@ -168,7 +168,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
                 string cellLayerName = _model[cellLayerIndex].Name;
                 builder.AppendLine($"Layer: {cellLayerName} ({cellLayerIndex})");
             }
-            if (cell.HasUniqueData)
+            if (cell.HasMetadata)
             {
                 builder.AppendLine("Has unique data.");
             }

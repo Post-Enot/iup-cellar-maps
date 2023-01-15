@@ -1,38 +1,27 @@
-﻿using System.Collections.Generic;
-
-namespace IUP.Toolkits.CellarMaps
+﻿namespace IUP.Toolkits.CellarMaps
 {
-    /// <summary>
-    /// Интерфейс палитры, содержащей набор уникальных типов клеток клеточных карт.
-    /// </summary>
-    public interface IPalette : IReadOnlyCollection<ICellType>
+    public interface IPalette : IReadOnlyPalette
     {
         /// <summary>
-        /// Количество типов клеток в палитре.
+        /// Создаёт новый тип клетки и добавляет его в палитру.
         /// </summary>
-        public new int Count { get; }
+        /// <param name="cellTypeName">Название типа клетки. Должно быть уникальным, иначе вызовет 
+        /// исключение ArgumentException.</param>
+        /// <returns>Возвращает ссылку на созданный тип клетки.</returns>
+        public void Add(string cellTypeName);
 
         /// <summary>
-        /// Индексатор для доступа к типу клетки по названию типа.
+        /// Удаляет передаванный тип клетки из палитры.
         /// </summary>
         /// <param name="cellTypeName">Название типа клетки.</param>
-        /// <returns>Возвращает тип клетки.</returns>
-        public ICellType this[string cellTypeName] { get; }
-
-        /// <summary>
-        /// Проверяет, содержит ли палитра тип клетки с переданным названием типа.
-        /// </summary>
-        /// <param name="cellTypeName">Название типа клетки.</param>
-        /// <returns>Возвращает true, если палитра содержит тип клетки с переданным названием типа; 
-        /// иначе false.</returns>
-        public bool Contains(string cellTypeName);
+        public void Remove(string cellTypeName);
 
         /// <summary>
         /// Изменяет название типа клетки, если это возможно.
         /// </summary>
-        /// <param name="cellTypeName">Название типа клетки.</param>
-        /// <param name="newTypeName">Новое название типа клетки.</param>
+        /// <param name="oldCellTypeName">Старое название типа клетки.</param>
+        /// <param name="newCellTypeName">Новое название типа клетки.</param>
         /// <returns>Возвращает true, если название типа клетки было успешно изменено; иначе false.</returns>
-        public bool RenameCellType(string cellTypeName, string newTypeName);
+        public void RenameCellType(string oldCellTypeName, string newCellTypeName);
     }
 }

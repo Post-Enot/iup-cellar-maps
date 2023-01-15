@@ -1,6 +1,5 @@
-﻿using IUP.Toolkits.CellarMaps.Serialization;
-using System;
-using System.IO;
+﻿using System.IO;
+using IUP.Toolkits.CellarMaps.Serialization;
 using UnityEditor;
 using UnityEngine;
 using DTO = IUP.Toolkits.CellarMaps.Serialization.DTO;
@@ -15,75 +14,40 @@ namespace IUP.Toolkits.CellarMaps
         /// <summary>
         /// Клеточная карта.
         /// </summary>
-        public ICellarMap CellarMap { get; private set; }
-        /// <summary>
-        /// Путь к файлу клеточной карты, связанный с данным ассетом.
-        /// </summary>
-        public string FilePath => AssetDatabase.GetAssetPath(this);
-        /// <summary>
-        /// True, если ассет связан с файлом клеточной карты.
-        /// </summary>
-        public bool IsAssetBound => _isAssetBound;
-        /// <summary>
-        /// True, если ассет был загружен с помощью метода LoadAsset.
-        /// </summary>
-        public bool IsAssetLoaded { get; private set; }
+        public IReadOnlyCellarMap CellarMap { get; private set; }
 
-        [SerializeField] private bool _isAssetBound;
-        private DTO.CellarMapFile _cellarMapFileDTO;
+        [SerializeField] private DTO.CellarMap _cellarMapDTO;
+
+        private void OnEnable()
+        {
+            LoadAsset();
+        }
 
         /// <summary>
         /// Загружает ассет из связанного с ним файла клеточной карты, инициализируя свойство CellarMap.
         /// </summary>
-        public void LoadAsset()
+        private void LoadAsset()
         {
-            _cellarMapFileDTO = LoadCellarMapFileDTO();
-            CellarMap = CellarMaps.CellarMap.DTO_ToCellarMap(_cellarMapFileDTO.cellar_map);
-            IsAssetLoaded = true;
-        }
-
-        /// <summary>
-        /// Сохраняет ассет в связанный с ним файл клеточной карты.
-        /// </summary>
-        public void SaveAsset()
-        {
-            if (!IsAssetLoaded)
+#if UNITY_EDITOR
+            string assetPath = AssetDatabase.GetAssetPath(this);
+            /* Данное условие срабатывает в первый раз, когда ассет только создан;
+             * в этом случае AssetDatabase.GetAssetPath(this) вернёт null.*/
+            if (assetPath == null)
             {
-                throw new InvalidOperationException("Сохранение ассета невозможно, т.к. ассет не был загружен.");
+                return;
             }
-            _cellarMapFileDTO.cellar_map = CellarMap.ToDTO();
-            string cellarMapJson = CellarMapSerializer.CellarMapFileDTO_ToJson(_cellarMapFileDTO);
-            File.WriteAllText(FilePath, cellarMapJson);
-        }
-
-        private DTO.CellarMapFile LoadCellarMapFileDTO()
-        {
-            if (!IsAssetBound)
-            {
-                throw new InvalidOperationException(
-                    "Ассет не связан с файлом клеточной карты: скорее всего это вызвано тем, что он был создан с помощью метода ScriptableObject.CreateInstance. Для создания ассета используйте метод CellarMapAsset.CreateAsset.");
-            }
-            string cellarMapJson = File.ReadAllText(FilePath);
-            return CellarMapSerializer.JsonToCellarMapFileDTO(cellarMapJson);
+            string cellarMapJson = File.ReadAllText(assetPath);
+            _cellarMapDTO = CellarMapSerializer.JsonToCellarMapFileDTO(cellarMapJson).cellar_map;
+#endif
+            CellarMap = CellarMapSerializer.DTO_ToCellarMap(_cellarMapDTO);
         }
 
         /// <summary>
-        /// Связывает ассет с json-файлом, используемым для сериализации и десериализации ассета.
+        /// Создаёт ассет клеточной карты.
         /// </summary>
-        private void BindWithJson_File()
+        public static CellarMapAsset CreateAsset()
         {
-            _isAssetBound = true;
-        }
-
-        /// <summary>
-        /// Создаёт и связывает ассет с json-файлом, используемым для сериализации и десериализации ассета.
-        /// </summary>
-        /// <param name="cellarMapFilePath">путь до json-файла клеточной карты.</param>
-        public static CellarMapAsset CreateAsset(string cellarMapFilePath)
-        {
-            var asset = CreateInstance<CellarMapAsset>();
-            asset.BindWithJson_File();
-            return asset;
+            return CreateInstance<CellarMapAsset>();
         }
     }
 }

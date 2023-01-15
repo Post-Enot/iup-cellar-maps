@@ -1,13 +1,13 @@
 ﻿namespace IUP.Toolkits.CellarMaps
 {
     /// <summary>
-    /// Интерфейс типа клетки клеточной карты.
+    /// ReadOnly-интерфейс типа клетки клеточной карты.
     /// </summary>
-    public interface ICellType
+    public interface IReadOnlyCellType
     {
         /// <summary>
         /// Название типа клетки. Значение никогда не равно null.
         /// </summary>
-        public string TypeName { get; }
+        public string Name { get; }
     }
 }

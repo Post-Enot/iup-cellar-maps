@@ -28,7 +28,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
         }
 
         public int SelectedLayerIndex { get; private set; }
-        public ILayer SelectedLayer => _model[SelectedLayerIndex];
+        public IReadOnlyLayer SelectedLayer => _model[SelectedLayerIndex];
 
         private readonly ICellarMapInteractor _model;
         private readonly UI.ILayerList _view;

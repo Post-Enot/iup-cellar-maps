@@ -6,40 +6,33 @@
     public sealed class Cell : ICell
     {
         /// <summary>
-        /// Инициализирует тип и уникальные данные клетки клеточной карты.
+        /// Инициализирует тип и уникальные данные клетки.
         /// </summary>
-        /// <param name="cellType">Тип клетки клеточной карты.</param>
-        /// <param name="uniqueData">Уникальные данные клетки клеточной карты.</param>
-        public Cell(ICellType cellType = null, string uniqueData = null)
+        /// <param name="type">Тип клетки.</param>
+        /// <param name="metadata">Метаданные.</param>
+        public Cell(IReadOnlyCellType type = null, string metadata = null)
         {
-            CellType = cellType;
-            UniqueData = uniqueData;
+            Type = type;
+            Metadata = metadata;
         }
 
-        public ICellType CellType { get; private set; }
-        public string MappingKey => CellType?.TypeName;
-        public string UniqueData { get; set; }
-        public bool IsEmpty => (CellType == null) && (UniqueData == null);
-        public bool HasUniqueData => UniqueData != null;
-        public bool HasCellType => CellType != null;
+        public IReadOnlyCellType Type { get; private set; }
+        public string MappingKey => Type?.Name;
+        public string Metadata { get; set; }
+        public bool IsEmpty => (Type == null) && (Metadata == null);
+        public bool HasMetadata => Metadata != null;
+        public bool HasType => Type != null;
 
-        /// <summary>
-        /// Очищает клетку, сбрасывая уникальные данные и устанавливая тип клетки null.
-        /// </summary>
         public void Clear()
         {
-            CellType = null;
-            UniqueData = null;
+            Type = null;
+            Metadata = null;
         }
 
-        /// <summary>
-        /// Изменяет тип клетки и сбрасывает уникальные данные.
-        /// </summary>
-        /// <param name="cellType">Тип клетки.</param>
-        public void SetCellType(ICellType cellType)
+        public void SetType(IReadOnlyCellType type)
         {
-            CellType = cellType;
-            UniqueData = null;
+            Type = type;
+            Metadata = null;
         }
     }
 }

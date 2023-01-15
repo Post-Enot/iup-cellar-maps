@@ -41,7 +41,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
             _activeCellTypeIndicator.SetViewData(_unselectedCellTypeViewData);
         }
 
-        public ICellType SelectedCellType { get; private set; }
+        public IReadOnlyCellType SelectedCellType { get; private set; }
 
         private readonly ICellarMapInteractor _model;
         private readonly UI.IPalette _view;

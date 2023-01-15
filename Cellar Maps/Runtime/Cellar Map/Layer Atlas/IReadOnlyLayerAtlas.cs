@@ -3,9 +3,9 @@
 namespace IUP.Toolkits.CellarMaps
 {
     /// <summary>
-    /// Интерфейс атласа слоёв клеточной карты.
+    /// ReadOnly-интерфейс атласа слоёв клеточной карты.
     /// </summary>
-    public interface ILayerAtlas : IReadOnlyList<ILayer>
+    public interface IReadOnlyLayerAtlas : IReadOnlyList<IReadOnlyLayer>
     {
         /// <summary>
         /// Ширина слоёв клеточной карты.
@@ -22,13 +22,13 @@ namespace IUP.Toolkits.CellarMaps
         /// <summary>
         /// Словарь для доступа к индексу слоя по самому слою.
         /// </summary>
-        public IReadOnlyDictionary<ILayer, int> LayerIndexByLayer { get; }
+        public IReadOnlyDictionary<IReadOnlyLayer, int> LayerIndexByLayer { get; }
 
         /// <summary>
         /// Индексатор для доступа к слоям клеточной карты.
         /// </summary>
         /// <param name="layerIndex">Индекс слоя клеточной карты.</param>
         /// <returns>Возвращает слой клеточной карты.</returns>
-        public new ILayer this[int layerIndex] { get; }
+        public new IReadOnlyLayer this[int layerIndex] { get; }
     }
 }

@@ -9,69 +9,86 @@ namespace IUP.Toolkits.CellarMaps
     /// </summary>
     public sealed class Palette : IPalette
     {
-        private readonly Dictionary<string, CellType> _cellTypeByTypeName = new();
+        public int Count => _cellTypeByName.Count;
 
-        public int Count => _cellTypeByTypeName.Count;
+        private readonly Dictionary<string, CellType> _cellTypeByName = new();
 
-        public ICellType this[string cellTypeName] => _cellTypeByTypeName[cellTypeName];
-
-        /// <summary>
-        /// Создаёт новый тип клетки и добавляет его в палитру.
-        /// </summary>
-        /// <param name="cellTypeName">Название типа клетки. Должно быть уникальным, иначе вызовет 
-        /// исключение ArgumentException.</param>
-        /// <returns>Возвращает ссылку на созданный тип клетки.</returns>
-        public void Add(string cellTypeName)
-        {
-            if (_cellTypeByTypeName.ContainsKey(cellTypeName))
-            {
-                throw new ArgumentException(
-                    "Палитра уже содержит тип клетки с переданным названием типа.", nameof(cellTypeName));
-            }
-            var type = new CellType(cellTypeName);
-            _cellTypeByTypeName.Add(cellTypeName, type);
-        }
-
-        /// <summary>
-        /// Удаляет передаванный тип клетки из палитры.
-        /// </summary>
-        /// <param name="cellTypeName">Название типа клетки.</param>
-        public void Remove(string cellTypeName)
-        {
-            bool isRemoveSuccessful = _cellTypeByTypeName.Remove(cellTypeName);
-            if (!isRemoveSuccessful)
-            {
-                throw new ArgumentException(
-                    "Отсутствует тип клетки с переданным названием типа в палитре.", nameof(cellTypeName));
-            }
-        }
+        public IReadOnlyCellType this[string cellTypeName] => _cellTypeByName[cellTypeName];
 
         public bool Contains(string cellTypeName)
         {
-            return _cellTypeByTypeName.ContainsKey(cellTypeName);
+            return _cellTypeByName.ContainsKey(cellTypeName);
         }
 
-        public bool RenameCellType(string cellTypeName, string newTypeName)
+        public void Add(string cellTypeName)
         {
-            if (_cellTypeByTypeName.ContainsKey(newTypeName))
+            if (_cellTypeByName.ContainsKey(cellTypeName))
             {
-                return false;
+                throw NewCellTypeWithNameAlreadyExist(
+                    nameof(cellTypeName),
+                    cellTypeName);
             }
-            CellType cellType = _cellTypeByTypeName[cellTypeName];
-            cellType.SetTypeName(newTypeName);
-            _ = _cellTypeByTypeName.Remove(cellTypeName);
-            _cellTypeByTypeName.Add(newTypeName, cellType);
-            return true;
+            var cellType = new CellType(cellTypeName);
+            _cellTypeByName.Add(cellTypeName, cellType);
+        }
+
+        public void Remove(string cellTypeName)
+        {
+            bool isRemoveSuccessful = _cellTypeByName.Remove(cellTypeName);
+            if (!isRemoveSuccessful)
+            {
+                throw NewCellTypeWithNameDoesNotExist(
+                    nameof(cellTypeName),
+                    cellTypeName);
+            }
+        }
+
+        public void RenameCellType(string oldCellTypeName, string newCellTypeName)
+        {
+            bool isRemoveSuccessfully = _cellTypeByName.Remove(oldCellTypeName);
+            if (!isRemoveSuccessfully)
+            {
+                throw NewCellTypeWithNameDoesNotExist(
+                    nameof(oldCellTypeName),
+                    oldCellTypeName);
+            }
+            if (_cellTypeByName.ContainsKey(newCellTypeName))
+            {
+                throw NewCellTypeWithNameAlreadyExist(
+                    nameof(newCellTypeName),
+                    newCellTypeName);
+            }
+            CellType cellType = _cellTypeByName[oldCellTypeName];
+            cellType.SetName(newCellTypeName);
+            _cellTypeByName.Add(newCellTypeName, cellType);
         }
 
         public IEnumerator<ICellType> GetEnumerator()
         {
-            return _cellTypeByTypeName.Values.GetEnumerator();
+            return _cellTypeByName.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _cellTypeByTypeName.Values.GetEnumerator();
+            return _cellTypeByName.Values.GetEnumerator();
+        }
+
+        private ArgumentException NewCellTypeWithNameAlreadyExist(
+            string argumentName,
+            string argumentValue)
+        {
+            return new ArgumentException(
+                    $"Палитра уже содержит тип клетки с переданным названием типа ({argumentValue})",
+                    argumentName);
+        }
+
+        private ArgumentException NewCellTypeWithNameDoesNotExist(
+            string argumentName,
+            string argumentValue)
+        {
+            return new ArgumentException(
+                    $"Отсутствует тип клетки с переданным названием типа в палитре ({argumentValue}).",
+                    argumentName);
         }
     }
 }

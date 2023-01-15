@@ -1,5 +1,6 @@
-﻿using IUP.Toolkits.Matrices;
-using System;
+﻿using System;
+using IUP.Toolkits.CellarMaps.Serialization;
+using IUP.Toolkits.Matrices;
 using UnityEngine;
 using DTO = IUP.Toolkits.CellarMaps.Serialization.DTO;
 
@@ -24,14 +25,14 @@ namespace IUP.Toolkits.CellarMaps.Editor
         public int LayersCount => _cellarMap.LayersCount;
         public ICellTypesViewData CellTypesViewData => _cellTypesViewData;
         public ILayersViewData LayersViewData => _layersViewData;
-        public IPalette Palette => _cellarMap.Palette;
+        public IReadOnlyPalette Palette => _cellarMap.Palette;
 
         private readonly ICellarMap _cellarMap;
         private readonly LayersViewData _layersViewData = new();
         private readonly CellTypesViewData _cellTypesViewData = new();
         private Action _markUnsavedChanges;
 
-        public ILayer this[int layerIndex] => _cellarMap[layerIndex];
+        public IReadOnlyLayer this[int layerIndex] => _cellarMap[layerIndex];
 
         public void SetMarkUnsavedChangesCallback(Action markUnsavedCallback)
         {
@@ -66,9 +67,9 @@ namespace IUP.Toolkits.CellarMaps.Editor
             _markUnsavedChanges();
         }
 
-        public (ICell cell, int cellLayerIndex) GetTopCell(int x, int y, int startLayerIndex = 0)
+        public (IReadOnlyCell cell, int cellLayerIndex) GetTopCell(int x, int y, int startLayerIndex = 0)
         {
-            ICell cell = this[startLayerIndex][x, y];
+            IReadOnlyCell cell = this[startLayerIndex][x, y];
             while (startLayerIndex > 0 && cell.IsEmpty)
             {
                 startLayerIndex -= 1;
@@ -77,7 +78,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
             return (cell, startLayerIndex);
         }
 
-        public (ICell cell, int cellLayerIndex) GetTopCell(Vector2Int coordinate, int startLayerIndex = 0)
+        public (IReadOnlyCell cell, int cellLayerIndex) GetTopCell(Vector2Int coordinate, int startLayerIndex = 0)
         {
             return GetTopCell(coordinate.x, coordinate.y, startLayerIndex);
         }
@@ -94,6 +95,11 @@ namespace IUP.Toolkits.CellarMaps.Editor
             _cellarMap.RemoveCellTypeFromPalette(cellTypeName);
             _cellTypesViewData.Remove(cellTypeName);
             _markUnsavedChanges();
+        }
+
+        public void RenameCellType(string cellTypeName, string newTypeName)
+        {
+            _cellarMap.RenameCellType(cellTypeName, newTypeName);
         }
 
         public void AddLayer(string layerName, Color layerColor)
@@ -134,17 +140,6 @@ namespace IUP.Toolkits.CellarMaps.Editor
             _markUnsavedChanges();
         }
 
-        public bool RenameCellType(string cellTypeName, string newTypeName)
-        {
-            bool isRenamed = _cellarMap.Palette.RenameCellType(cellTypeName, newTypeName);
-            if (isRenamed)
-            {
-                _cellTypesViewData.RenameCellTypeViewData(cellTypeName, newTypeName);
-                _markUnsavedChanges();
-            }
-            return isRenamed;
-        }
-
         public void SetCellTypeColor(string cellTypeName, Color cellTypeColor)
         {
             _cellTypesViewData.SetCellTypeColor(cellTypeName, cellTypeColor);
@@ -153,7 +148,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
 
         public void RenameLayer(int layerIndex, string newLayerName)
         {
-            _cellarMap[layerIndex].Rename(newLayerName);
+            _cellarMap.RenameLayer(layerIndex, newLayerName);
             _markUnsavedChanges();
         }
 
@@ -186,13 +181,13 @@ namespace IUP.Toolkits.CellarMaps.Editor
                     layer_name = LayersViewData[i].Name
                 };
             }
-            return (cellarMapViewDataDTO, _cellarMap.ToDTO());
+            return (cellarMapViewDataDTO, CellarMapSerializer.CellarMapToDTO(_cellarMap));
         }
 
         public static ICellarMapInteractor DTO_ToCellarMapInteractor(
             DTO.CellarMapFile cellarMapFileDTO)
         {
-            ICellarMap cellarMap = CellarMap.DTO_ToCellarMap(cellarMapFileDTO.cellar_map);
+            ICellarMap cellarMap = CellarMapSerializer.DTO_ToCellarMap(cellarMapFileDTO.cellar_map);
             DTO.CellarMapViewData cellarMapViewDataDTO = cellarMapFileDTO.cellar_map_view_data;
             var cellarMapInteractor = new CellarMapInteractor(cellarMap);
             foreach (DTO.CellTypeViewData viewData in cellarMapViewDataDTO.cell_types_view_data)

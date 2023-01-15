@@ -10,8 +10,8 @@ namespace IUP.Toolkits.CellarMaps.Editor
             LayerListPresenter layerList,
             CellarMapPresenter presenter) : base(model, palette, layerList, presenter) { }
 
-        private ILayer SelectedLayer => Model[LayerList.SelectedLayerIndex];
-        private ICellType SelectedCellType => Palette.SelectedCellType;
+        private IReadOnlyLayer SelectedLayer => Model[LayerList.SelectedLayerIndex];
+        private IReadOnlyCellType SelectedCellType => Palette.SelectedCellType;
 
         public override void Enable()
         {
@@ -27,13 +27,13 @@ namespace IUP.Toolkits.CellarMaps.Editor
         {
             if (SelectedCellType != null)
             {
-                if (SelectedLayer[cellCoordinate].CellType
+                if (SelectedLayer[cellCoordinate].Type
                     != SelectedCellType)
                 {
                     Model.SetCellType(
                         LayerList.SelectedLayerIndex,
                         cellCoordinate,
-                        SelectedCellType.TypeName);
+                        SelectedCellType.Name);
                 }
                 else
                 {
@@ -46,7 +46,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
             }
             else
             {
-                if (SelectedLayer[cellCoordinate].CellType != null)
+                if (SelectedLayer[cellCoordinate].Type != null)
                 {
                     Model.SetCellType(
                         LayerList.SelectedLayerIndex,

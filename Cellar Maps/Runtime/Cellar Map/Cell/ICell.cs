@@ -3,33 +3,17 @@
     /// <summary>
     /// Интерфейс клетки клеточной карты.
     /// </summary>
-    public interface ICell
+    public interface ICell : IReadOnlyCell
     {
         /// <summary>
-        /// Тип клетки клеточной карты.
+        /// Очищает клетку, сбрасывая метаданные и устанавливая тип клетки равным null.
         /// </summary>
-        public ICellType CellType { get; }
+        public void Clear();
+
         /// <summary>
-        /// Ключ сопоставления клетки клеточной карты, предполагаемый к использованию классами-генераторами 
-        /// для идентификации типа клетки клеточной карты. Если клетка пуста, равен null.
+        /// Изменяет тип клетки и сбрасывает метаданные.
         /// </summary>
-        public string MappingKey { get; }
-        /// <summary>
-        /// Уникальные данные клетки клеточной карты, предполагаемые к использованию классами-генераторами. 
-        /// Может иметь абсолютно любое значение.
-        /// </summary>
-        public string UniqueData { get; }
-        /// <summary>
-        /// Клетка считается пустой, если её тип равен null и в ней отсутствуют уникальные данные.
-        /// </summary>
-        public bool IsEmpty { get; }
-        /// <summary>
-        /// True, если клетка имеет уникальные данные.
-        /// </summary>
-        public bool HasUniqueData { get; }
-        /// <summary>
-        /// True, если клетка имеет тип.
-        /// </summary>
-        public bool HasCellType { get; }
+        /// <param name="cellType">Тип клетки.</param>
+        public void SetType(IReadOnlyCellType type);
     }
 }
