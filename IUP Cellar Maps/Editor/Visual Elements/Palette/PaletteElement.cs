@@ -72,6 +72,7 @@ namespace IUP.Toolkits.CellarMaps.Editor.UI
                 _bindedViewData.CellTypeName,
                 _cellTypeNameField.value,
                 _cellTypeColorField.value);
+            UpdateApplyRevertBlock();
         }
 
         #region UXML

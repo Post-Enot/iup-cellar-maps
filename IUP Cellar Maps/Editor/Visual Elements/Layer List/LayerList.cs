@@ -8,49 +8,49 @@ using UnityEngine.UIElements;
 namespace IUP.Toolkits.CellarMaps.Editor.UI
 {
     /// <summary>
-    /// UI-представление палитры клеточной карты.
+    /// UI-представление списка слоёв клеточной карты.
     /// </summary>
-    public sealed class Palette : ListView, IPalette
+    public sealed class LayerList : ListView, ILayerList
     {
-        public Palette() : base()
+        public LayerList() : base()
         {
-            AddToClassList("cm-palette");
+            AddToClassList("cm-layer-list");
             InitUI_Properties();
             makeItem = () =>
             {
-                var element = new PaletteElement();
+                var element = new LayerListElement();
                 element.ViewDataChanged += Element_ViewDataChanged;
                 return element;
             };
             bindItem = (VisualElement item, int i) =>
             {
-                var paletteElement = item as IPaletteElement;
-                paletteElement.BindWith(itemsSource[i] as ICellTypeViewData);
+                var layerListElement = item as LayerListElement;
+                layerListElement.BindWith(itemsSource[i] as ILayerViewData);
             };
             itemsAdded += HandleItemsAddedEvent;
             itemsRemoved += HandleItemsRemovedEvent;
             itemIndexChanged += HandleItemIndexChangedEvent;
-            onSelectionChange += HandleOnSelectionChangeEvent;
+            selectionChanged += HandleOnSelectionChangeEvent;
         }
 
-        public event Action<string, string, Color> ViewDataChanged;
+        public event Action<int, string, Color> ViewDataChanged;
         public event Action<int> Added;
         public event Action<int> Removed;
         public event Action<int, int> MovedFromTo;
-        public event Action<ICellTypeViewData> Selected;
+        public event Action<int> Selected;
         public event Action Unselected;
 
-        public void BindWith(IReadOnlyList<ICellTypeViewData> viewDataList)
+        public void BindWith(IReadOnlyList<ILayerViewData> viewDataList)
         {
             itemsSource = viewDataList.ToArray();
         }
 
         private void Element_ViewDataChanged(
-            string cellTypeName,
+            ILayerViewData viewData,
             string newCellTypeName,
             Color cellTypeColor)
         {
-            ViewDataChanged?.Invoke(cellTypeName, newCellTypeName, cellTypeColor);
+            ViewDataChanged?.Invoke(itemsSource.IndexOf(viewData), newCellTypeName, cellTypeColor);
         }
 
         private void HandleOnSelectionChangeEvent(IEnumerable<object> elements)
@@ -59,7 +59,8 @@ namespace IUP.Toolkits.CellarMaps.Editor.UI
             enumerator.MoveNext();
             if (enumerator.Current != null)
             {
-                Selected?.Invoke(enumerator.Current as ICellTypeViewData);
+                int layerIndex = itemsSource.IndexOf(enumerator.Current as ILayerViewData);
+                Selected?.Invoke(layerIndex);
             }
             else
             {
@@ -82,7 +83,7 @@ namespace IUP.Toolkits.CellarMaps.Editor.UI
                 Removed?.Invoke(itemIndex);
             }
         }
-        
+
         private void HandleItemIndexChangedEvent(int from, int to)
         {
             MovedFromTo?.Invoke(from, to);
@@ -92,7 +93,7 @@ namespace IUP.Toolkits.CellarMaps.Editor.UI
         {
             virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight;
             showBorder = true;
-            headerTitle = "Palette";
+            headerTitle = "Layers";
             showFoldoutHeader = true;
             showAddRemoveFooter = true;
             reorderable = true;
@@ -101,7 +102,7 @@ namespace IUP.Toolkits.CellarMaps.Editor.UI
 
         #region UXML
         [Preserve]
-        public new sealed class UxmlFactory : UxmlFactory<Palette, UxmlTraits> { }
+        public new sealed class UxmlFactory : UxmlFactory<LayerList, UxmlTraits> { }
 
         [Preserve]
         public new sealed class UxmlTraits : VisualElement.UxmlTraits { }

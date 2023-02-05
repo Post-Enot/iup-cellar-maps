@@ -99,6 +99,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
 
         public void RenameCellType(string cellTypeName, string newTypeName)
         {
+            _cellTypesViewData.RenameCellTypeViewData(cellTypeName, newTypeName);
             _cellarMap.RenameCellType(cellTypeName, newTypeName);
         }
 

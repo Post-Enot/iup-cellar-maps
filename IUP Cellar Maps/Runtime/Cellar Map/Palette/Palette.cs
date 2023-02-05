@@ -45,6 +45,7 @@ namespace IUP.Toolkits.CellarMaps
 
         public void RenameCellType(string oldCellTypeName, string newCellTypeName)
         {
+            CellType cellType = _cellTypeByName[oldCellTypeName];
             bool isRemoveSuccessfully = _cellTypeByName.Remove(oldCellTypeName);
             if (!isRemoveSuccessfully)
             {
@@ -58,7 +59,6 @@ namespace IUP.Toolkits.CellarMaps
                     nameof(newCellTypeName),
                     newCellTypeName);
             }
-            CellType cellType = _cellTypeByName[oldCellTypeName];
             cellType.SetName(newCellTypeName);
             _cellTypeByName.Add(newCellTypeName, cellType);
         }

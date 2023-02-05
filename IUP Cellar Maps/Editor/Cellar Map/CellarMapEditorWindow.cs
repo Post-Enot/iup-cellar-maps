@@ -101,7 +101,7 @@ namespace IUP.Toolkits.CellarMaps.Editor
         {
             (DTO.CellarMapViewData cellarMapViewDataDTO, DTO.CellarMap cellarMapDTO)
                 = _cellarMapInteractor.ToDTO();
-            var cellarMapFile = new DTO.CellarMapFile()
+            DTO.CellarMapFile cellarMapFile = new()
             {
                 data_format_version = _cellarMapFileDTO.data_format_version,
                 cellar_map_view_data = cellarMapViewDataDTO,
@@ -122,9 +122,9 @@ namespace IUP.Toolkits.CellarMaps.Editor
         [OnOpenAsset]
         public static bool OnOpenAsset(int instanceId, int line)
         {
-            var path = AssetDatabase.GetAssetPath(instanceId);
+            string path = AssetDatabase.GetAssetPath(instanceId);
             if (!path.EndsWith(CellarMapImporter._fileExtension,
-                StringComparison.InvariantCultureIgnoreCase))
+                    StringComparison.InvariantCultureIgnoreCase))
             {
                 return false;
             }
